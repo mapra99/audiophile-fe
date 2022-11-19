@@ -13,13 +13,13 @@ export default () => {
         </h2>
 
         <div className="flex flex-wrap gap-4">
-          <div className="bg-orange sm:bg-black w-20 h-20 rounded-md hover:w-36 transition-all" />
-          <div className="bg-brown w-20 h-20 rounded-md hover:w-36 transition-all" />
-          <div className="bg-gray w-20 h-20 rounded-md hover:w-36 transition-all" />
-          <div className="bg-gray-light w-20 h-20 rounded-md hover:w-36 transition-all" />
-          <div className="bg-orange-light w-20 h-20 rounded-md hover:w-36 transition-all" />
-          <div className="bg-white w-20 h-20 rounded-md hover:w-36 transition-all" />
-          <div className="bg-black w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-orange border w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-brown border w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-gray border w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-gray-light border w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-orange-light border w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-white border w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-black border w-20 h-20 rounded-md hover:w-36 transition-all" />
         </div>
       </div>
 
