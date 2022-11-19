@@ -1,4 +1,4 @@
-import { Button } from "~/components"
+import { Button, Text } from "~/components"
 
 export default () => {
   return (
@@ -13,7 +13,7 @@ export default () => {
         </h2>
 
         <div className="flex flex-wrap gap-4">
-          <div className="bg-orange w-20 h-20 rounded-md hover:w-36 transition-all" />
+          <div className="bg-orange sm:bg-black w-20 h-20 rounded-md hover:w-36 transition-all" />
           <div className="bg-brown w-20 h-20 rounded-md hover:w-36 transition-all" />
           <div className="bg-gray w-20 h-20 rounded-md hover:w-36 transition-all" />
           <div className="bg-gray-light w-20 h-20 rounded-md hover:w-36 transition-all" />
@@ -28,8 +28,42 @@ export default () => {
           2. TYPOGRAPHY
         </h2>
 
-        <div className="flex flex-wrap gap-4">
-          
+        <div className="flex flex-col gap-4">
+          <Text variant="heading-1">
+            Morbi interdum mollis sapien
+          </Text>
+
+          <Text variant="heading-2">
+            Donec nec justo eget felis facilisis
+          </Text>
+
+          <Text variant="heading-3">
+            Nunc sem lacus accum
+          </Text>
+
+          <Text variant="heading-4">
+            interdum consectetuer
+          </Text>
+
+          <Text variant="heading-5">
+            nascetur ridiculus mus
+          </Text>
+
+          <Text variant="heading-6">
+            natoque penatibus et
+          </Text>
+
+          <Text variant="overline">
+            LOREM IPSUM
+          </Text>
+
+          <Text variant="subtitle">
+            Fusce ut est sed dolor gravida convallis
+          </Text>
+
+          <Text variant="body">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti.
+          </Text>
         </div>
       </div>
 
