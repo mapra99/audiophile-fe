@@ -3,7 +3,7 @@ import { Chevron } from '~/icons'
 
 import type { ButtonLinkProps } from './types'
 
-const Button = ({variant, children, className, ...props}: ButtonLinkProps) => {
+const ButtonLink = ({variant, children, className, ...props}: ButtonLinkProps) => {
   let styles = 'block px-8 py-4 uppercase font-sans text-sm tracking-widest font-bold transition-colors '
   if (variant === 'primary') {
     styles += 'bg-orange hover:bg-orange-light text-white'
@@ -21,4 +21,4 @@ const Button = ({variant, children, className, ...props}: ButtonLinkProps) => {
   )
 }
 
-export default Button
+export default ButtonLink
