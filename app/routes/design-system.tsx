@@ -1,16 +1,19 @@
-import { Button, Text } from "~/components"
+import { Button, Text, TextInput } from "~/components"
 
 export default () => {
   return (
-    <div className="max-w-5xl m-4">
-      <h1 className="font-sans text-3xl font-bold text-brown mb-4">
+    <div className="max-w-5xl p-4">
+      <Text variant="heading-1" className="my-3">
         DESIGN SYSTEM
-      </h1>
+      </Text>
 
       <div className="my-6">
-        <h2 className="font-sans text-xl font-bold text-brown mb-3">
-          1. COLORS
-        </h2>
+        <Text variant="heading-2" className="my-3">
+          <span className="text-orange pr-2">
+            01
+          </span>
+          COLORS
+        </Text>
 
         <div className="flex flex-wrap gap-4">
           <div className="bg-orange border w-20 h-20 rounded-md hover:w-36 transition-all" />
@@ -24,9 +27,12 @@ export default () => {
       </div>
 
       <div className="my-6">
-        <h2 className="font-sans text-xl font-bold text-brown mb-3">
-          2. TYPOGRAPHY
-        </h2>
+        <Text variant="heading-2" className="my-3">
+          <span className="text-orange pr-2">
+            02
+          </span>
+          TYPOGRAPHY
+        </Text>
 
         <div className="flex flex-col gap-4">
           <Text variant="heading-1">
@@ -68,9 +74,12 @@ export default () => {
       </div>
 
       <div className="my-6">
-        <h2 className="font-sans text-xl font-bold text-brown mb-3">
-          3. BUTTONS
-        </h2>
+        <Text variant="heading-2" className="my-3">
+          <span className="text-orange pr-2">
+            03
+          </span>
+          BUTTONS
+        </Text>
 
         <div className="flex flex-wrap gap-4">
           <Button variant="primary">
@@ -84,6 +93,20 @@ export default () => {
           <Button variant="tertiary">
             See Product
           </Button>
+        </div>
+      </div>
+
+      <div className="my-6">
+        <Text variant="heading-2" className="my-3">
+          <span className="text-orange pr-2">
+            04
+          </span>
+          Form Controls
+        </Text>
+
+        <div className="flex flex-wrap gap-4">
+          <TextInput label="Name" id="name" type="text" placeholder="Insert your name" />
+          <TextInput label="Name" id="name" type="text" placeholder="Insert your name" value="!@#!@$!@" error="Wrong format" />
         </div>
       </div>
     </div>
