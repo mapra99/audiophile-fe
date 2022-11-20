@@ -1,4 +1,4 @@
-import { Button, Text, TextInput } from "~/components"
+import { Button, Text, TextInput, RadioInput } from "~/components"
 
 export default () => {
   return (
@@ -104,9 +104,14 @@ export default () => {
           Form Controls
         </Text>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 my-2">
           <TextInput label="Name" id="name" type="text" placeholder="Insert your name" />
           <TextInput label="Name" id="name" type="text" placeholder="Insert your name" value="!@#!@$!@" error="Wrong format" />
+        </div>
+
+        <div className="flex flex-wrap gap-4 my-2">
+          <RadioInput label="e-Money" id="e_money" />
+          <RadioInput label="e-Money" id="e_money" checked />
         </div>
       </div>
     </div>

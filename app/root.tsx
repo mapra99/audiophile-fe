@@ -4,6 +4,7 @@ import {
   LiveReload,
   Meta,
   Outlet,
+  Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
 
@@ -29,6 +30,7 @@ export default function App() {
       <body className="h-full">
         <Outlet />
         <ScrollRestoration />
+        <Scripts />
         <LiveReload />
       </body>
     </html>

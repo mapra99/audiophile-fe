@@ -1,12 +1,7 @@
-import type { InputHTMLAttributes } from "react";
-
-export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string
-  error?: string
-}
+import type { TextInputProps } from './types'
 
 const TextInput = ({label, id, className, error, ...props}: TextInputProps) => {
-  let inputStyles = 'px-6 py-4 border-2 border-gray text-sm placehodlder:text-gray font-bold rounded-lg focus:border-orange focus:outline-orange focus:caret-orange '
+  let inputStyles = 'px-6 py-4.5 border-2 border-gray text-sm placehodlder:text-gray font-bold rounded-lg focus:border-orange focus:outline-orange focus:caret-orange '
   if (error) inputStyles += 'border-danger'
 
   return (
@@ -25,7 +20,7 @@ const TextInput = ({label, id, className, error, ...props}: TextInputProps) => {
       <input
         {...props}
         id = {id}
-        className={`${inputStyles} ${className}`}
+        className={`${inputStyles} ${className || ''}`}
       />
     </div>
   )

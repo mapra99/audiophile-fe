@@ -37,6 +37,10 @@ module.exports = {
       letterSpacing: {
         'super-wide': '0.72em'
       },
+      spacing: {
+        '4.5': '1.125rem',
+        13: '3.25rem'
+      },
     }
   },
   plugins: [],
