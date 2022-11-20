@@ -1,4 +1,4 @@
-import type { TextProps, TextTag, DefaultTags, TextVariant, Breakpoint, ResponsiveVariants } from './types'
+import type { TextProps, TextTag, DefaultTags, TextVariant, Breakpoint } from './types'
 
 const DEFAULT_TAGS: DefaultTags = {
   'heading-1': 'h1',
@@ -12,8 +12,8 @@ const DEFAULT_TAGS: DefaultTags = {
   'body': 'p'
 }
 
-const buildStylesFor = (variantName: TextVariant, breakpoint?: Breakpoint): string => {
-  let styles = ['font-sans', 'text-black']
+const buildStylesFor = (variantName: TextVariant): string => {
+  let styles = ['font-sans']
   if (variantName === 'heading-1') {
     styles = styles.concat(['text-6xl', 'font-bold uppercase'])
   } else if (variantName === 'heading-2') {
@@ -34,35 +34,16 @@ const buildStylesFor = (variantName: TextVariant, breakpoint?: Breakpoint): stri
     styles = styles.concat(['text-base', 'font-medium'])
   }
 
-  if (breakpoint && breakpoint !== 'xs') {
-    styles = styles.map(style => `${breakpoint}:${style}`)
-  }
-
   return styles.join(' ')
 }
 
-const resolveStyles = (variant: TextVariant | ResponsiveVariants): string => {
-  let styles = ''
-  if (typeof(variant) === "string") {
-    styles = buildStylesFor(variant)
-  } else {
-    const breakpoints = Object.keys(variant) as Breakpoint[]
-    breakpoints.forEach((breakpoint) => {
-      styles += ` ${buildStylesFor(variant[breakpoint] as TextVariant, breakpoint)}`
-    })
-  }
-
-  return styles
-}
-
-const resolveElement = (variant: TextVariant | ResponsiveVariants, as?: TextTag): TextTag => {
-  const isSingleVariant = typeof(variant) === 'string'
-  return as || DEFAULT_TAGS[isSingleVariant ? variant : variant.xs]
+const resolveElement = (variant: TextVariant, as?: TextTag): TextTag => {
+  return as || DEFAULT_TAGS[variant]
 }
 
 const Text = ({ as, variant, className, children }: TextProps) => {
   const Element = resolveElement(variant, as)
-  const styles = resolveStyles(variant)
+  const styles = buildStylesFor(variant)
 
   return (
     <Element className={`${styles} ${className || ''}`}>
