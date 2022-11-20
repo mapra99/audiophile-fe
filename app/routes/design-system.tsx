@@ -1,4 +1,4 @@
-import { Button, Text, TextInput, RadioInput } from "~/components"
+import { Button, Text, TextInput, RadioInput, QuantityInput } from "~/components"
 
 export default () => {
   return (
@@ -112,6 +112,10 @@ export default () => {
         <div className="flex flex-wrap gap-4 my-2">
           <RadioInput label="e-Money" id="e_money" />
           <RadioInput label="e-Money" id="e_money" checked />
+        </div>
+
+        <div className="flex flex-wrap gap-4 my-2">
+          <QuantityInput id="amount" />
         </div>
       </div>
     </div>
