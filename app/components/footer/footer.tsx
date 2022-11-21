@@ -30,23 +30,23 @@ const Footer = () => {
           </nav>
         </div>
 
-        <Text variant="body" className="text-white text-center opacity-50 sm:text-left sm:mb-12 lg:max-w-lg lg:mb-5">
-          Audiophile is an all in one stop to fulfill your audio needs. We're a small team of music lovers and sound specialists who are devoted to helping you get the most out of personal audio. Come and visit our demo facility - we’re open 7 days a week.
-        </Text>
+        <div className="flex flex-col gap-y-12 sm:flex-row sm:justify-between items-center flex-wrap lg:items-end">
+          <Text variant="body" className="text-white text-center opacity-50 sm:text-left sm:mb-12 lg:max-w-lg lg:mb-5 order-1 lg:w-2/4">
+            Audiophile is an all in one stop to fulfill your audio needs. We're a small team of music lovers and sound specialists who are devoted to helping you get the most out of personal audio. Come and visit our demo facility - we’re open 7 days a week.
+          </Text>
 
-        <div className="flex flex-col gap-12 sm:flex-row sm:justify-between items-center">
-          <Text variant="body" className="text-white text-center opacity-50 !font-bold sm:text-left">
+          <Text variant="body" className="text-white text-center opacity-50 !font-bold sm:text-left order-2 lg:order-3 lg:w-full">
             Copyright 2022. All Rights Reserved
           </Text>
 
-          <div className="flex gap-4 justify-center items-center">
-            <a className="hover:[& > path]:fill-orange" href="https://www.facebook.com">
+          <div className="flex gap-4 justify-center items-center order-3 lg:order-2 lg:w-2/4 lg:justify-end lg:mb-5">
+            <a className="hover:[&>svg>path]:fill-orange [&>svg>path]:transition" href="https://www.facebook.com">
               <Facebook />
             </a>
-            <a href="https://www.twitter.com">
+            <a className="hover:[&>svg>path]:fill-orange [&>svg>path]:transition" href="https://www.twitter.com">
               <Twitter />
             </a>
-            <a href="https://www.instagram.com">
+            <a className="hover:[&>svg>path]:fill-orange [&>svg>path]:transition" href="https://www.instagram.com">
               <Instagram />
             </a>
           </div>
