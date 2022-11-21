@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import { Footer } from '~/components'
+import { Footer, Header } from '~/components'
 import { allProductCategories } from '~/models/product-category'
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
@@ -39,6 +39,7 @@ export default function App() {
         <Links />
       </head>
       <body className="min-h-full flex flex-col">
+        <Header />
         <div className="flex-1">
           <Outlet />
         </div>
