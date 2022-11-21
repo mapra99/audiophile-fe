@@ -1,4 +1,4 @@
-import type { TextProps, TextTag, DefaultTags, TextVariant, Breakpoint } from './types'
+import type { TextProps, TextTag, DefaultTags, TextVariant } from './types'
 
 const DEFAULT_TAGS: DefaultTags = {
   'heading-1': 'h1',
