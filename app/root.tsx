@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { Footer } from '~/components'
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
@@ -27,8 +28,11 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
-        <Outlet />
+      <body className="min-h-full flex flex-col">
+        <div className="flex-1">
+          <Outlet />
+        </div>
+        <Footer />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

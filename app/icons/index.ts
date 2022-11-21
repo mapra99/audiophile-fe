@@ -1,1 +1,5 @@
 export { default as Chevron } from './chevron'
+export { default as AudiophileLogo } from './audiophile-logo'
+export { default as Facebook } from './facebook'
+export { default as Twitter } from './twitter'
+export { default as Instagram } from './instagram'
