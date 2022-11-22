@@ -1,12 +1,14 @@
 import invariant from 'tiny-invariant'
 import RequestError from '~/errors/request-error'
-import type { SendRequestOptions } from './types'
+import type { SendRequestOptions, RequestMethod, ApiVersion } from './types'
 
 const BASE_URL = process.env.AUDIOPHILE_BASE_URL
 const API_KEY = process.env.AUDIOPHILE_API_KEY
+const API_VERSION = process.env.AUDIOPHILE_API_VERSION
 
 invariant(BASE_URL, 'AUDIOPHILE_BASE_URL env var should be present')
 invariant(API_KEY, 'AUDIOPHILE_API_KEY env var should be present')
+invariant(API_VERSION, 'AUDIOPHILE_API_VERSION env var should be present')
 
 const buildHeaders = (authToken?: string, sessionToken?: string) => {
   const headers: HeadersInit = {
@@ -20,11 +22,12 @@ const buildHeaders = (authToken?: string, sessionToken?: string) => {
   return headers
 }
 
-const buildUrl = (path: string) => (
-  new URL(path, BASE_URL).toString()
-)
+const buildUrl = (path: string, apiVersion?: ApiVersion) => {
+  const fullPath = ['api', apiVersion || API_VERSION, path].join('/')
+  return new URL(fullPath, BASE_URL).toString()
+}
 
-export const sendRequest = async (method: string, path: string, { authToken, sessionToken, body }: SendRequestOptions) => {
+export const sendRequest = async (method: RequestMethod, path: string, { authToken, sessionToken, body, apiVersion }: SendRequestOptions = {}) => {
   const headers = buildHeaders(authToken, sessionToken);
   const formattedBody = JSON.stringify(body)
 
@@ -34,7 +37,7 @@ export const sendRequest = async (method: string, path: string, { authToken, ses
     body: formattedBody
   }
 
-  const url = buildUrl(path)
+  const url = buildUrl(path, apiVersion)
 
   const response = await fetch(url, request)
   const result = await response.json();
