@@ -2,7 +2,7 @@ import invariant from 'tiny-invariant'
 import RequestError from '~/errors/request-error'
 import type { SendRequestOptions, RequestMethod, ApiVersion } from './types'
 
-const BASE_URL = process.env.AUDIOPHILE_BASE_URL
+const BASE_URL = process.env.AUDIOPHILE_API_BASE_URL
 const API_KEY = process.env.AUDIOPHILE_API_KEY
 const API_VERSION = process.env.AUDIOPHILE_API_VERSION
 
