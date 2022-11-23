@@ -1,8 +1,9 @@
 import { Link } from '@remix-run/react'
 import { AudiophileLogo, Facebook, Twitter, Instagram } from '~/icons'
 import { Text } from '~/components'
+import type { FooterProps } from './types'
 
-const Footer = () => {
+const Footer = ({ categories }: FooterProps) => {
   return (
     <footer
       className="bg-brown px-6 pb-9 pt-0 sm:px-10 sm:pb-12"
@@ -17,16 +18,17 @@ const Footer = () => {
             <Link to="/" className="font-sans text-white text-xs uppercase font-bold tracking-widest hover:text-orange transition">
               Home
             </Link>
-            {/* TODO: Fetch product_categories from API and show those here instead of hardcoding */}
-            <Link to="/headphones" className="font-sans text-white text-xs uppercase font-bold tracking-widest hover:text-orange transition">
-              Headphones
-            </Link>
-            <Link to="/speakers" className="font-sans text-white text-xs uppercase font-bold tracking-widest hover:text-orange transition">
-              Speakers
-            </Link>
-            <Link to="/earphones" className="font-sans text-white text-xs uppercase font-bold tracking-widest hover:text-orange transition">
-              Earphones
-            </Link>
+            {
+              categories.map(category => (
+                <Link
+                  key={category.slug}
+                  to={`categories/${category.slug}`}
+                  className="font-sans text-white text-xs uppercase font-bold tracking-widest hover:text-orange transition"
+                >
+                  { category.name }
+                </Link>
+              ))
+            }
           </nav>
         </div>
 
