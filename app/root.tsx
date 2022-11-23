@@ -39,7 +39,7 @@ export default function App() {
         <Links />
       </head>
       <body className="min-h-full flex flex-col">
-        <Header />
+        <Header categories={categories} />
         <div className="flex-1">
           <Outlet />
         </div>
