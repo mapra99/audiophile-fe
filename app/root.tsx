@@ -1,4 +1,3 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from '@remix-run/node'
 import {
   Links,
@@ -11,8 +10,11 @@ import {
 } from "@remix-run/react";
 import { Footer } from '~/components'
 import { allProductCategories } from '~/models/product-category'
+import * as SessionStorage from '~/utils/session-storage'
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+
+import type { LinksFunction, MetaFunction, LoaderArgs } from "@remix-run/node";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -24,9 +26,12 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderArgs) => {
   const categories = await allProductCategories();
-  return json({ categories })
+  const { sessionId, headers } = await SessionStorage.getOrCreateSessionId(request)
+  console.log(sessionId)
+
+  return json({ categories }, { headers })
 }
 
 export default function App() {
