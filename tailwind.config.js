@@ -27,6 +27,7 @@ module.exports = {
       '2xl': ['1.5rem', { lineHeight: '2rem' }],      // 24px
       '3xl': ['1.75rem', { lineHeight: '2.375rem' }], // 28px
       '4xl': ['2rem', { lineHeight: '2.25rem' }],     // 32px
+      '4.5xl': ['2.25rem', { lineHeight: '2.5rem' }], // 36px
       '5xl': ['2.5rem', { lineHeight: '2.75rem' }],   // 40px
       '6xl': ['3.5rem', { lineHeight: '3.625rem' }],  // 56px
       '7xl': ['4.5rem', { lineHeight: '1' }],
@@ -39,8 +40,13 @@ module.exports = {
       },
       spacing: {
         '4.5': '1.125rem',
-        13: '3.25rem'
+        13: '3.25rem',
+        128: '32rem'
       },
+      minHeight: {
+        128: '32rem',
+        160: '40rem'
+      }
     }
   },
   plugins: [],
