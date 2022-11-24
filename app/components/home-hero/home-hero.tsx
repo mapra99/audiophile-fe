@@ -6,7 +6,7 @@ const HomeHero = ({ product }: HomeHeroProps) => {
 
   return (
     <section className="bg-brown">
-      <div className="box-border min-h-128 py-28 px-6 relative z-0 sm:min-h-160 sm:px-48 sm:py-32">
+      <div className="box-border min-h-128 py-28 px-6 relative z-0 sm:min-h-160 sm:px-48 sm:py-32 max-w-6xl mx-auto lg:flex lg:gap-12 lg:px-0 lg:py-10 lg:max-h-160">
         <div className="flex flex-col justify-center items-center">
           <Text variant="overline" className="opacity-50 text-white mb-4 sm:mb-6" as="span">
             New Product
@@ -26,7 +26,7 @@ const HomeHero = ({ product }: HomeHeroProps) => {
           <img
             src={featured_image[0]}
             alt={`${name} preview`}
-            className="absolute left-0 top-0 h-full w-full object-cover -z-10 opacity-50"
+            className="absolute left-0 top-0 h-full w-full object-cover -z-10 opacity-50 lg:static lg:opacity-50 lg:w-176 lg:h-full"
           />
         ) : null}
       </div>
