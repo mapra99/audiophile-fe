@@ -26,7 +26,7 @@ const HomeHero = ({ product }: HomeHeroProps) => {
           <img
             src={featured_image[0]}
             alt={`${name} preview`}
-            className="absolute left-0 top-0 h-full w-full object-cover -z-10 opacity-50 lg:static lg:opacity-50 lg:w-176 lg:h-full"
+            className="absolute left-0 top-0 h-full w-full object-cover -z-10 opacity-50 lg:static lg:opacity-100 lg:w-176 lg:h-full"
           />
         ) : null}
       </div>
