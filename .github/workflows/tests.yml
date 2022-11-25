@@ -83,6 +83,24 @@ jobs:
   cypress:
     name: ⚫️ Cypress
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -106,10 +124,35 @@ jobs:
       - name: ⚙️ Build
         run: npm run build
 
-      - name: 🌳 Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          start: npm run start:mocks
-          wait-on: "http://localhost:8811"
+      - name: Install RVM and Ruby for Audiophile API
+        run: |
+          curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
+          curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - && \
+          curl -sSL https://get.rvm.io | bash -s stable && \
+          source /home/circleci/.rvm/scripts/rvm && \
+          rvm install 3.0.4
+
+      - name: Use test mode
+        run: echo 'export RAILS_ENV=test' >> $BASH_ENV
+
+      - name: Use RVM
+        run: echo 'source /home/circleci/.rvm/scripts/rvm' >> $BASH_ENV
+
+      - name: Clone and setup Audiophile API
+        run: |
+          git clone --depth 1 https://github.com/mapra99/audiophile-api.git && \
+          git checkout test/e2e-seeds && \ 
+          cd hapi && \
+          rvm use 3.0.4 && \
+          gem install bundler && \
+          bundle install && \
+          cp config/database.github-actions.yml config/database.yml
+          cd ..
         env:
-          PORT: "8811"
+          GRPC_RUBY_BUILD_PROCS: 10
+
+      - name: 🌳 Start Audiophile API and run Cypress
+        run: |
+          cd audiophile-api && rvm use 3.0.4 && ./test-server.sh option=-d && \
+          cd .. && \
+          node_modules/.bin/cypress run
