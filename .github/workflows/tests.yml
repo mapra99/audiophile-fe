@@ -111,7 +111,6 @@ jobs:
       - name: 🏄 Copy test env vars
         run: |
           cp .env.example .env
-          cat .env.example | while read line; do export $line; done
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -161,7 +160,10 @@ jobs:
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v4
         with:
-          start: npm run start:mocks
+          start: |
+            cat .env.example | while read line; do export $line; done
+            echo $AUDIOPHILE_API_BASE_URL
+            npm run start:mocks
           wait-on: "http://localhost:8811"
         env:
           PORT: "8811"
