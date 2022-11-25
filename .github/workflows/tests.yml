@@ -160,7 +160,7 @@ jobs:
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v4
         with:
-          start: cat .env.example | while read line; do export $line; done && npm run start:mocks
-          wait-on: "http://localhost:8811"
+          start: npm run start:mocks
+          wait-on: "http://localhost:3000"
         env:
-          PORT: "8811"
+          PORT: "3000"
