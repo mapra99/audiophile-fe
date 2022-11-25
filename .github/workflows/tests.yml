@@ -124,14 +124,14 @@ jobs:
       - name: ⚙️ Build
         run: npm run build
 
-      - name: Install system libraries
+      - name: 🔧 Install system libraries
         run: sudo apt-get install libpq-dev
 
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.4
 
-      - name: Clone and setup Audiophile API
+      - name: ⚙️ Build Audiophile API
         run: |
           git clone --depth=1 https://github.com/mapra99/audiophile-api.git ./audiophile-api
           cd audiophile-api
@@ -142,7 +142,7 @@ jobs:
         env:
           RAILS_ENV: test
 
-      - name: 🌳 Start Audiophile API
+      - name: 🧨 Start Audiophile API
         run: |
           echo $AUDIOPHILE_API_BASE_URL
           cd audiophile-api
