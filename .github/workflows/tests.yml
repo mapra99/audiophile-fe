@@ -147,6 +147,7 @@ jobs:
         run: |
           cd audiophile-api
           ./test-server.sh
+          sleep 5
           cd ..
           node_modules/.bin/cypress run
         env:
