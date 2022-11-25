@@ -131,7 +131,7 @@ jobs:
           curl -sSL https://get.rvm.io | bash -s stable
 
       - name: Use test mode
-        run: export RAILS_ENV=test'
+        run: export RAILS_ENV=test
 
       - name: Use RVM
         run: |
