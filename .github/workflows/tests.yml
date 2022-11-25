@@ -134,8 +134,8 @@ jobs:
       - name: Clone and setup Audiophile API
         run: |
           git clone https://github.com/mapra99/audiophile-api.git ./audiophile-api
-          git checkout test/e2e-seeds
           cd audiophile-api
+          git checkout test/e2e-seeds
           gem install bundler
           bundle install
           cp config/database.github-actions.yml config/database.yml
