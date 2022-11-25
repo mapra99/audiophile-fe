@@ -124,20 +124,19 @@ jobs:
       - name: ⚙️ Build
         run: npm run build
 
-      - name: Install RVM and Ruby for Audiophile API
+      - name: Install system libraries
+        run: sudo apt-get install libpq-dev
+
+      - name: Install rbenv and Ruby for Audiophile API
         run: |
-          curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
-          curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - && \
-          curl -sSL https://get.rvm.io | bash -s stable && \
-          source /home/runner/.rvm/scripts/rvm && \
-          rvm install 3.0.4
+          git clone --depth=1 https://github.com/rbenv/rbenv.git ~/.rbenv && \
+          echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc && \
+          git clone --depth=1 https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build && \
+          source ~/.bashrc && \
+          rbenv install 3.0.4
 
       - name: Use test mode
         run: echo 'export RAILS_ENV=test' >> ~/.bashrc
-
-      - name: Use RVM
-        run: |
-          echo 'source /home/runner/.rvm/scripts/rvm' >> ~/.bashrc
 
       - name: Clone and setup Audiophile API
         run: |
@@ -145,7 +144,6 @@ jobs:
           git clone https://github.com/mapra99/audiophile-api.git ./audiophile-api && \
           git checkout test/e2e-seeds && \ 
           cd audiophile-api && \
-          rvm use 3.0.4 && \
           gem install bundler && \
           bundle install && \
           cp config/database.github-actions.yml config/database.yml
@@ -155,6 +153,6 @@ jobs:
 
       - name: 🌳 Start Audiophile API and run Cypress
         run: |
-          cd audiophile-api && rvm use 3.0.4 && ./test-server.sh option=-d && \
+          cd audiophile-api && ./test-server.sh option=-d && \
           cd .. && \
           node_modules/.bin/cypress run
