@@ -29,7 +29,7 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
+          useLockFile: true
 
       - name: 🔬 Lint
         run: npm run lint
@@ -52,7 +52,7 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
+          useLockFile: true
 
       - name: 🔎 Type check
         run: npm run typecheck --if-present
@@ -75,7 +75,7 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
+          useLockFile: true
 
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
@@ -120,7 +120,7 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
+          useLockFile: true
 
       - name: ⚙️ Build
         run: npm run build
@@ -160,10 +160,7 @@ jobs:
       - name: 🌳 Cypress run
         uses: cypress-io/github-action@v4
         with:
-          start: |
-            cat .env.example | while read line; do export $line; done
-            echo $AUDIOPHILE_API_BASE_URL
-            npm run start:mocks
+          start: cat .env.example | while read line; do export $line; done && npm run start:mocks
           wait-on: "http://localhost:8811"
         env:
           PORT: "8811"
