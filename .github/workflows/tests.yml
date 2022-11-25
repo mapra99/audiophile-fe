@@ -110,6 +110,10 @@ jobs:
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
+             cat .env.example | while read line \
+              do \
+              export $line \
+              done
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
