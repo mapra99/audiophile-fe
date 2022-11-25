@@ -143,15 +143,22 @@ jobs:
         env:
           RAILS_ENV: test
 
-      - name: 🌳 Start Audiophile API and run Cypress
+      - name: 🌳 Start Audiophile API
         run: |
           cd audiophile-api
           ./test-server.sh
           sleep 5
           cd ..
-          node_modules/.bin/cypress run
         env:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           REDIS_URL: redis://localhost:6379
+
+      - name: 🌳 Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: npm run start:mocks
+          wait-on: "http://localhost:8811"
+        env:
+          PORT: "8811"
