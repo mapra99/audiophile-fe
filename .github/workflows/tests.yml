@@ -128,21 +128,21 @@ jobs:
         run: |
           curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
           curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - && \
-          curl -sSL https://get.rvm.io | bash -s stable && \
+          curl -sSL https://get.rvm.io | bash -s stable
+
+      - name: Use test mode
+        run: export RAILS_ENV=test'
+
+      - name: Use RVM
+        run: |
           source /home/runner/.rvm/scripts/rvm && \
           rvm install 3.0.4
 
-      - name: Use test mode
-        run: echo 'export RAILS_ENV=test' >> $BASH_ENV
-
-      - name: Use RVM
-        run: echo 'source /home/runner/.rvm/scripts/rvm' >> $BASH_ENV
-
       - name: Clone and setup Audiophile API
         run: |
-          git clone --depth 1 https://github.com/mapra99/audiophile-api.git && \
+          git clone --depth 1 https://github.com/mapra99/audiophile-api.git ./audiophile-api && \
           git checkout test/e2e-seeds && \ 
-          cd hapi && \
+          cd audiophile-api && \
           rvm use 3.0.4 && \
           gem install bundler && \
           bundle install && \
