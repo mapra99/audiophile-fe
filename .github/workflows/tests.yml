@@ -141,7 +141,8 @@ jobs:
 
       - name: Clone and setup Audiophile API
         run: |
-          git clone --depth 1 https://github.com/mapra99/audiophile-api.git ./audiophile-api && \
+          source ~/.bashrc && \
+          git clone https://github.com/mapra99/audiophile-api.git ./audiophile-api && \
           git checkout test/e2e-seeds && \ 
           cd audiophile-api && \
           rvm use 3.0.4 && \
