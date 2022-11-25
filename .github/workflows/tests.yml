@@ -153,3 +153,4 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          REDIS_URL: redis://localhost:6379
