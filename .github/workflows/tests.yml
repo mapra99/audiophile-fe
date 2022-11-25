@@ -129,8 +129,8 @@ jobs:
 
       - name: Install rbenv and Ruby for Audiophile API
         run: |
-          git clone --depth=1 https://github.com/rbenv/rbenv.git ~/.rbenv && \
-          echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc && \
+          git clone --depth=1 https://github.com/rbenv/rbenv.git .rbenv/ && \
+          echo 'eval "$(.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc && \
           git clone --depth=1 https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build && \
           source ~/.bashrc && \
           rbenv install 3.0.4
