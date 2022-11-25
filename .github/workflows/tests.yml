@@ -110,10 +110,9 @@ jobs:
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
-             cat .env.example | while read line \
-              do \
-              export $line \
-              done
+             ./load-env-vars.sh
+             source ~/.bashrc
+             echo $AUDIOPHILE_API_BASE_URL
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
@@ -149,6 +148,7 @@ jobs:
 
       - name: 🌳 Start Audiophile API
         run: |
+          echo $AUDIOPHILE_API_BASE_URL
           cd audiophile-api
           ./test-server.sh
           sleep 5
