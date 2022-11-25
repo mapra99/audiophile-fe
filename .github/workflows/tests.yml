@@ -109,13 +109,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 🏄 Copy test env vars
-        run: cp .env.example .env
-
-      - name: Load env vars to system vars
         run: |
-          ./load-env-vars.sh
-          source ~/.bashrc
-          echo $AUDIOPHILE_API_BASE_URL
+          cp .env.example .env
+          cat .env.example | while read line; do export $line; done
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
