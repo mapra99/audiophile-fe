@@ -146,9 +146,10 @@ jobs:
       - name: 🌳 Start Audiophile API and run Cypress
         run: |
           cd audiophile-api
-          ls -a
-          ./test-server.sh option=-d
+          ./test-server.sh
           cd ..
           node_modules/.bin/cypress run
         env:
           RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
