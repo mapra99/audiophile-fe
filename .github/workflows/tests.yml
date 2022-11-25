@@ -129,14 +129,14 @@ jobs:
           curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
           curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - && \
           curl -sSL https://get.rvm.io | bash -s stable && \
-          source /home/circleci/.rvm/scripts/rvm && \
+          source /home/runner/.rvm/scripts/rvm && \
           rvm install 3.0.4
 
       - name: Use test mode
         run: echo 'export RAILS_ENV=test' >> $BASH_ENV
 
       - name: Use RVM
-        run: echo 'source /home/circleci/.rvm/scripts/rvm' >> $BASH_ENV
+        run: echo 'source /home/runner/.rvm/scripts/rvm' >> $BASH_ENV
 
       - name: Clone and setup Audiophile API
         run: |
