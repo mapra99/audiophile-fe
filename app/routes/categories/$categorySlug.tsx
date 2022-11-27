@@ -23,9 +23,9 @@ export default () => {
   return (
     <div>
       <Heading name={category.name} />
-      <div className="flex flex-col gap-28 pt-16 pb-28 px-6">
-        { category.products.map(product => (
-          <ProductBanner key={product.slug} product={product} />
+      <div className="flex flex-col gap-28 pt-16 pb-28 px-6 sm:py-28 sm:px-10">
+        { category.products.map((product, index) => (
+          <ProductBanner key={product.slug} product={product} index={index} />
         )) }
       </div>
     </div>
