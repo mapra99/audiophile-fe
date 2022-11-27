@@ -28,8 +28,7 @@ export const meta: MetaFunction = () => ({
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = await allProductCategories();
-  const { sessionId, headers } = await SessionStorage.getOrCreateSessionId(request)
-  console.log(sessionId)
+  const { headers } = await SessionStorage.getOrCreateSessionId(request)
 
   return json({ categories }, { headers })
 }
