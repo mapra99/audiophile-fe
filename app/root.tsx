@@ -8,7 +8,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import { Footer } from '~/components'
+import { Footer, Header } from '~/components'
 import { allProductCategories } from '~/models/product-category'
 import * as SessionStorage from '~/utils/session-storage'
 
@@ -28,8 +28,7 @@ export const meta: MetaFunction = () => ({
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = await allProductCategories();
-  const { sessionId, headers } = await SessionStorage.getOrCreateSessionId(request)
-  console.log(sessionId)
+  const { headers } = await SessionStorage.getOrCreateSessionId(request)
 
   return json({ categories }, { headers })
 }
@@ -44,6 +43,7 @@ export default function App() {
         <Links />
       </head>
       <body className="min-h-full flex flex-col">
+        <Header categories={categories} />
         <div className="flex-1">
           <Outlet />
         </div>
