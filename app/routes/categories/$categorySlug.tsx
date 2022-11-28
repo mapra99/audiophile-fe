@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react"
 import { json } from '@remix-run/node'
 import invariant from "tiny-invariant"
 import { allProductCategories, getProductCategory } from "~/models/product-category"
-import { Heading, ProductBanner, CategoriesList } from '~/components'
+import { Heading, ProductBanner, CategoriesList, BestAudioBanner } from '~/components'
 import type { LoaderArgs } from "@remix-run/server-runtime"
 
 export const loader = async ({ params }: LoaderArgs) => {
@@ -34,6 +34,10 @@ export default () => {
 
       <div className="mb-28 lg:mb-40">
         <CategoriesList categories={categories} />
+      </div>
+
+      <div className="mb-28 lg:mb-40">
+        <BestAudioBanner />
       </div>
     </div>
   )
