@@ -23,10 +23,11 @@ export const ProductSchema = z.object({
   contents: z.object({
     featured_description: z.string().optional(),
     featured_image: z.array(z.string()).optional(),
+    home_image: z.array(z.string()).optional(),
     description: z.string(),
     features: z.string(),
     box_content: z.string(),
-    preview_images: z.array(z.string())
+    preview_images: z.array(z.string()),
   })
 })
 
