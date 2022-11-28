@@ -31,7 +31,10 @@ export default () => {
           <ProductBanner key={product.slug} product={product} index={index} />
         )) }
       </div>
-      <CategoriesList categories={categories} />
+
+      <div className="mb-28 lg:mb-40">
+        <CategoriesList categories={categories} />
+      </div>
     </div>
   )
 }
