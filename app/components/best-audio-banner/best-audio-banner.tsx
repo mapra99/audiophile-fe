@@ -8,7 +8,7 @@ const BestAudioBanner = () => {
           <img
             src="/images/best-audio.png"
             alt=''
-            className="h-72 object-cover lg:min-h-128"
+            className="h-72 object-cover lg:min-h-128 w-full"
           />
         </div>
 
