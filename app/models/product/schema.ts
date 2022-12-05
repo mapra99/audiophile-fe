@@ -24,6 +24,8 @@ export const ProductSchema = z.object({
     featured_description: z.string().optional(),
     featured_image: z.array(z.string()).optional(),
     home_image: z.array(z.string()).optional(),
+    home_banner: z.string().optional(),
+    home_description: z.string().optional(),
     description: z.string(),
     features: z.string(),
     box_content: z.string(),
