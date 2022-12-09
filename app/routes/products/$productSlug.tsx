@@ -2,7 +2,7 @@ import invariant from 'tiny-invariant'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { getProduct } from '~/models/product'
-import { ProductHeading } from '~/components'
+import { ProductHeading, ProductFeatures } from '~/components'
 
 import type { LoaderArgs } from '@remix-run/node'
 
@@ -33,6 +33,10 @@ export default () => {
 
       <div className="mb-20 sm:mb-28 lg:mb-40">
         <ProductHeading product={product} />
+      </div>
+
+      <div className="mb-20 sm:mb-28 lg:mb-40">
+        <ProductFeatures product={product} />
       </div>
     </div>
   )
