@@ -2,7 +2,10 @@ import { Text, ButtonLink } from '~/components'
 import type { HomeHeroProps } from "./types"
 
 const HomeHero = ({ product }: HomeHeroProps) => {
-  const { name, contents: { featured_description, featured_image }, slug } = product
+  const { name, contents: { featured_description, featured_image, description }, slug, image } = product
+
+  const heroImageUrl = featured_image ? featured_image[0] : image.url
+  const heroDescription = featured_description || description
 
   return (
     <section className="bg-brown">
@@ -15,20 +18,18 @@ const HomeHero = ({ product }: HomeHeroProps) => {
             { name }
           </Text>
           <Text variant="body" className="text-white opacity-75 text-center mb-7 sm:mb-10">
-            { featured_description }
+            { heroDescription }
           </Text>
           <ButtonLink variant="primary" to={`products/${slug}`}>
             See product
           </ButtonLink>
         </div>
 
-        { featured_image ? (
-          <img
-            src={featured_image[0]}
-            alt={`${name} preview`}
-            className="absolute left-0 top-0 h-full w-full object-cover -z-10 opacity-50 lg:static lg:opacity-100 lg:w-176 lg:h-full"
-          />
-        ) : null}
+        <img
+          src={heroImageUrl}
+          alt={`${name} preview`}
+          className="absolute left-0 top-0 h-full w-full object-cover -z-10 opacity-50 lg:static lg:opacity-100 lg:w-176 lg:h-full"
+        />
       </div>
     </section>
   )
