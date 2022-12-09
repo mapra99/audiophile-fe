@@ -1,4 +1,4 @@
-import { Text, ButtonLink } from '~/components'
+import { Text, ButtonLink, ProductImage } from '~/components'
 import type { ProductBannerProps } from "./types"
 
 const ProductBanner = ({ product, index }: ProductBannerProps) => {
@@ -6,13 +6,8 @@ const ProductBanner = ({ product, index }: ProductBannerProps) => {
 
   return (
     <div className="flex flex-col gap-8 sm:gap-13 max-w-6xl mx-auto lg:flex-row lg:gap-32">
-      <div data-order={index % 2 === 0 ? "1" : "2"} className="bg-gray box-border p-10 rounded-lg lg:flex-1 lg:data-[order=2]:order-2 lg:data-[order=1]:order-1">
-        <img
-          src={image.url}
-          alt={`Overview of ${name}`}
-          className="h-56 mx-auto"
-        />
-        <div className="w-40 h-9 bg-black opacity-20 mx-auto rounded-[50%] blur-xl" />
+      <div data-order={index % 2 === 0 ? "1" : "2"} className="lg:flex-1 lg:data-[order=2]:order-2 lg:data-[order=1]:order-1">
+        <ProductImage url={image.url} name={name} />
       </div>
 
       <div data-order={index % 2 === 0 ? "2" : "1"} className="flex flex-col gap-6 sm:gap-4 lg:flex-1 lg:data-[order=2]:order-2 lg:data-[order=1]:order-1">

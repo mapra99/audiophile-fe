@@ -8,3 +8,10 @@ export const featuredProducts = async () => {
 
   return products
 }
+
+export const getProduct = async (slug: string) => {
+  const response = await AudiophileClient.sendRequest('get', `products/${slug}`)
+  const product = ProductSchema.parse(response)
+
+  return product
+}
