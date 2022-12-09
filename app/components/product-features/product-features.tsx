@@ -10,7 +10,7 @@ const ProductFeatures = ({ product }: ProductFeaturesProps) => {
   const boxItems = JSON.parse(box_content) as BoxItem[]
 
   return (
-    <div className="max-w-6xl mx-auto px-6 flex flex-col gap-20 sm:gap-28 sm:px-10 lg:flex-row lg:gap-32">
+    <div className="max-w-6xl mx-auto flex flex-col gap-20 sm:gap-28 lg:flex-row lg:gap-32">
       <div className="lg:flex-1">
         <Text variant="heading-3" className="!text-2xl sm:!text-4xl mb-6 sm:mb-8">
           Features
