@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react";
 import { Footer, Header } from '~/components'
 import { allProductCategories } from '~/models/product-category'
+import { getLastStartedCart } from './models/purchase-cart';
 import * as SessionStorage from '~/utils/session-storage'
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
@@ -28,13 +29,14 @@ export const meta: MetaFunction = () => ({
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = await allProductCategories();
-  const { headers } = await SessionStorage.getOrCreateSessionId(request)
+  const { headers, sessionId } = await SessionStorage.getOrCreateSessionId(request)
+  const activeCart = await getLastStartedCart(sessionId)
 
-  return json({ categories }, { headers })
+  return json({ categories, activeCart }, { headers })
 }
 
 export default function App() {
-  const { categories } = useLoaderData<typeof loader>()
+  const { categories, activeCart } = useLoaderData<typeof loader>()
 
   return (
     <html lang="en" className="h-full">
@@ -43,7 +45,7 @@ export default function App() {
         <Links />
       </head>
       <body className="min-h-full flex flex-col">
-        <Header categories={categories} />
+        <Header categories={categories} activeCart={activeCart} />
         <div className="flex-1">
           <Outlet />
         </div>
