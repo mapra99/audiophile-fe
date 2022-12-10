@@ -32,6 +32,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const { headers, sessionId } = await SessionStorage.getOrCreateSessionId(request)
   const activeCart = await getLastStartedCart(sessionId)
 
+  console.log({ sessionId })
   return json({ categories, activeCart }, { headers })
 }
 
@@ -44,7 +45,10 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body
+        className="min-h-full flex flex-col data-[modal=open]:overflow-hidden"
+        data-modal="closed"
+      >
         <Header categories={categories} activeCart={activeCart} />
         <div className="flex-1">
           <Outlet />

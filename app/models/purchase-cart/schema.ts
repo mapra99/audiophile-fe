@@ -6,13 +6,23 @@ export const PurchaseCartSchema = z.object({
   uuid: z.string(),
   total_price: z.number(),
   status: z.enum(['started', 'paid', 'canceled']),
-  user_location_uuid: z.string().optional(),
+  user_location_uuid: z.string().nullable(),
   items: z.array(z.object({
     uuid: z.string(),
-    stock_uuid: z.string(),
     quantity: z.number(),
     unit_price: z.number(),
-    price: z.number()
+    price: z.number(),
+    stock: z.object({
+      uuid: z.string(),
+      quantity: z.number(),
+      product: z.object({
+        name: z.string(),
+        slug: z.string(),
+        image: z.object({
+          url: z.string()
+        }).optional()
+      })
+    })
   })),
   extra_fees: z.array(z.object({
     key: z.string(),

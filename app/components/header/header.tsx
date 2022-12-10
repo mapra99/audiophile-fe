@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link } from '@remix-run/react'
 import { useMediaQuery } from 'react-responsive'
-import { AudiophileLogo, BurgerMenu, PurchaseCart, Cross } from '~/icons'
+import { AudiophileLogo, BurgerMenu, Cross } from '~/icons'
+import { PurchaseCart } from '~/components'
 import { BREAKPT_LG } from '~/constants'
 
 
@@ -11,13 +12,23 @@ const Header = ({ categories, activeCart }: HeaderProps) => {
   const [menuOpened, setMenuOpened] = useState<boolean>(false)
   const isBigScreen = useMediaQuery({ query: `(min-width: ${BREAKPT_LG}px)` })
 
+  const openMenu = () => {
+    setMenuOpened(true)
+    document.body.dataset['modal'] = 'open'
+  }
+
+  const closeMenu = () => {
+    setMenuOpened(false)
+    document.body.dataset['modal'] = 'closed'
+  }
+
   return (
     <header
       className="bg-brown py-8 px-6 sm:px-10"
     >
       <div className="flex justify-between items-center max-w-6xl mx-auto">
         { !isBigScreen && (
-          <button onClick={() => setMenuOpened(true)}>
+          <button onClick={openMenu}>
             <BurgerMenu className="w-4"/>
           </button>
         )}
@@ -45,7 +56,7 @@ const Header = ({ categories, activeCart }: HeaderProps) => {
           </nav>
         )}
 
-        <PurchaseCart className="w-6" />
+        <PurchaseCart activeCart={activeCart} />
       </div>
 
       { !isBigScreen && (
@@ -54,7 +65,7 @@ const Header = ({ categories, activeCart }: HeaderProps) => {
           data-state={menuOpened ? "opened" : "closed"}
         >
           <div className="py-9 px-6 sm:px-10">
-            <button onClick={() => setMenuOpened(false)}>
+            <button onClick={closeMenu}>
               <Cross className="pb-8 w-4 transition" />
             </button>
 
