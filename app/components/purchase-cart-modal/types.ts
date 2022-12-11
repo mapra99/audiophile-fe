@@ -1,6 +1,6 @@
 import type { PurchaseCart } from '~/models/purchase-cart'
 
-export interface PurchaseCartListProps {
-  cart: PurchaseCart
+export interface PurchaseCartModalProps {
+  cart: PurchaseCart | undefined
   onClose: () => void
 }

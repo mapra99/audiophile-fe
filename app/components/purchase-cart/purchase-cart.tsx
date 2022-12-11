@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { PurchaseCart as CartIcon, Cross } from '~/icons'
-import { Text, Button, ButtonLink, QuantityInput, PurchaseCartList } from '~/components'
-import formatCurrency from '~/utils/format-currency'
+import { PurchaseCart as CartIcon } from '~/icons'
+import { PurchaseCartModal } from '~/components'
 
 import type { PurchaseCart as PurchaseCartType } from '~/models/purchase-cart'
 import type { PurchaseCartProps } from "./types"
@@ -27,7 +26,7 @@ const PurchaseCart = ({ activeCart }: PurchaseCartProps) => {
       </button>
 
       { open && (
-        <PurchaseCartList
+        <PurchaseCartModal
           cart={cart}
           onClose={closeCartList}
         />
