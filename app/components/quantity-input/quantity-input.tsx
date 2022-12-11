@@ -8,7 +8,13 @@ const QuantityInput = ({ className, value, onChange, ...props }: QuantityInputPr
   const increment = () => setQty(qty + 1)
   const decrement = () => setQty(qty - 1)
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newQty = parseInt(event.target.value)
+    const { value } = event.target
+    if (!value) {
+      setQty(0)
+      return
+    }
+
+    const newQty = parseInt(value)
     setQty(newQty)
 
     if(onChange) onChange(event)
@@ -18,7 +24,7 @@ const QuantityInput = ({ className, value, onChange, ...props }: QuantityInputPr
   const inputStyles = 'text-center bg-gray text-black font-bold m-0 w-6 focus:outline-none text-xs'
 
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <button className={buttonStyles} onClick={decrement}>-</button>
       <input
         {...props}

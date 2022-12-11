@@ -33,4 +33,9 @@ export const ProductSchema = z.object({
   })
 })
 
+export interface BoxItem {
+  quantity: string
+  content: string
+}
+
 export type Product = z.infer<typeof ProductSchema>;
