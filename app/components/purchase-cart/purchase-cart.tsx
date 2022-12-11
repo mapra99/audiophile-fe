@@ -7,7 +7,7 @@ import type { PurchaseCartProps } from "./types"
 
 const PurchaseCart = ({ activeCart }: PurchaseCartProps) => {
   const [open, setOpen] = useState<boolean>(false)
-  const [cart, setCart] = useState<PurchaseCartType | undefined>(activeCart)
+  const [cart] = useState<PurchaseCartType | undefined>(activeCart)
 
   const openCartList = () => {
     setOpen(true)
