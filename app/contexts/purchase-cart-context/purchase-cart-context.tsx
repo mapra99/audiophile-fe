@@ -1,12 +1,14 @@
 import { useState, createContext } from 'react';
+import { PurchaseCartSchema } from '~/models/purchase-cart'
 
-import type { PurchaseCart } from '~/models/purchase-cart'
+import type { PurchaseCart, PurchaseCartItemPayload } from '~/models/purchase-cart'
 import type { IPurchaseCartContext, PurchaseCartProviderProps } from './types';
 
 export const PurchaseCartContext = createContext<IPurchaseCartContext>({
   cartListOpen: false,
   openCartList: () => {},
-  closeCartList: () => {}
+  closeCartList: () => {},
+  createOrUpdateCart: (_item: PurchaseCartItemPayload) => {}
 })
 
 export const PurchaseCartProvider = ({ children, activeCart }: PurchaseCartProviderProps) => {
@@ -23,11 +25,28 @@ export const PurchaseCartProvider = ({ children, activeCart }: PurchaseCartProvi
     document.body.dataset["modal"] = 'closed'
   }
 
+  const createOrUpdateCart = async (item: PurchaseCartItemPayload) => {
+    const payload = {
+      item,
+      cartUuid: cart?.uuid
+    }
+
+    const response = await fetch('/api/purchase-carts', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+
+    const data = await response.json()
+    setCart(PurchaseCartSchema.parse(data.cart))
+  }
+
   const contextVal: IPurchaseCartContext = {
     cart,
     cartListOpen,
     openCartList,
-    closeCartList
+    closeCartList,
+    createOrUpdateCart
   };
 
   return (

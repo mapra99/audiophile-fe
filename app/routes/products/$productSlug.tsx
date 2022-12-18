@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { getProduct } from '~/models/product'
+import { getProduct, getProductStocks } from '~/models/product'
 import { allProductCategories } from '~/models/product-category'
 import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner } from '~/components'
 
@@ -18,13 +18,14 @@ export const loader = async ({ params }: LoaderArgs) => {
     throw new Response("Not Found", { status: 404 })
   }
 
+  const stocks = await getProductStocks(productSlug)
   const categories = await allProductCategories()
 
-  return json({ product, categories })
+  return json({ product, categories, stocks })
 }
 
 export default () => {
-  const { product, categories } = useLoaderData<typeof loader>()
+  const { product, categories, stocks } = useLoaderData<typeof loader>()
 
   const goBack = () => history.back()
 
@@ -39,7 +40,7 @@ export default () => {
       </div>
 
       <div className="px-6 sm:px-10 mb-20 sm:mb-28 lg:mb-40">
-        <ProductHeading product={product} />
+        <ProductHeading product={product} stocks={stocks} />
       </div>
 
       <div className="px-6 sm:px-10 mb-20 sm:mb-28 lg:mb-40">

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import type { QuantityInputProps } from "./types"
 
-const QuantityInput = ({ className, value, onChange, ...props }: QuantityInputProps) => {
+const QuantityInput = ({ className, value, min, max, onChange, ...props }: QuantityInputProps) => {
   const [qty, setQty] = useState(value as number || 0)
 
   const increment = () => setQty(qty + 1)
@@ -13,6 +13,9 @@ const QuantityInput = ({ className, value, onChange, ...props }: QuantityInputPr
       setQty(0)
       return
     }
+
+    if (min && parseInt(value) < min) setQty(min)
+    if (max && parseInt(value) > max) setQty(max)
 
     const newQty = parseInt(value)
     setQty(newQty)
@@ -25,14 +28,14 @@ const QuantityInput = ({ className, value, onChange, ...props }: QuantityInputPr
 
   return (
     <div className="flex h-full">
-      <button className={buttonStyles} onClick={decrement}>-</button>
+      <button className={buttonStyles} onClick={decrement} type="button">-</button>
       <input
         {...props}
         className={`${inputStyles} ${className || ''}`}
         value={qty}
         onChange={handleChange}
       />
-      <button className={buttonStyles} onClick={increment}>+</button>
+      <button className={buttonStyles} onClick={increment} type="button">+</button>
     </div>
   )
 }

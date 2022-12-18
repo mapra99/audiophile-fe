@@ -33,7 +33,6 @@ export const loader = async ({ request }: LoaderArgs) => {
   const { headers, sessionId } = await SessionStorage.getOrCreateSessionId(request)
   const activeCart = await getLastStartedCart(sessionId)
 
-  console.log({ sessionId })
   return json({ categories, activeCart }, { headers })
 }
 

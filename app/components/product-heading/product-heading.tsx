@@ -1,12 +1,13 @@
-import { ProductImage, Text, QuantityInput, Button } from '~/components'
+import { ProductImage, Text, AddProductForm, NotEnoughStocksBanner } from '~/components'
 import formatCurrency from '~/utils/format-currency'
 
 import type { ProductHeadingpProps } from "./types"
 
-const ProductHeading = ({ product }: ProductHeadingpProps) => {
+const ProductHeading = ({ product, stocks }: ProductHeadingpProps) => {
   const { name, image, featured, base_price, contents: { description } } = product
 
   const formattedPrice = formatCurrency(base_price)
+  const stock = stocks[0] // TODO: Support multiple stocks when product toppings are implemented. For now each product will have only 1 stock
 
   return (
     <div className="max-w-6xl mx-auto flex flex-col gap-8 sm:flex-row sm:gap-16 sm:items-center lg:gap-32">
@@ -33,12 +34,11 @@ const ProductHeading = ({ product }: ProductHeadingpProps) => {
           { formattedPrice }
         </Text>
 
-        <div className="flex gap-4 items-center">
-          <QuantityInput value={1} />
-          <Button variant="primary" className="py-3">
-            Add to Cart
-          </Button>
-        </div>
+        { stock?.quantity > 0 ? (
+          <AddProductForm stock={stock} />
+        ) : (
+          <NotEnoughStocksBanner />
+        ) }
       </div>
     </div>
   )

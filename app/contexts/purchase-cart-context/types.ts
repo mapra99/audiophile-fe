@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
-import type { PurchaseCart } from '~/models/purchase-cart'
+import type { PurchaseCart, PurchaseCartItemPayload } from '~/models/purchase-cart'
 
 export interface IPurchaseCartContext {
   cart?: PurchaseCart
   cartListOpen: boolean
   openCartList: () => void
-  closeCartList: () => void
+  closeCartList: () => void,
+  createOrUpdateCart: (item: PurchaseCartItemPayload) => void
 }
 
 export interface PurchaseCartProviderProps {

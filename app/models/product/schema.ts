@@ -33,9 +33,17 @@ export const ProductSchema = z.object({
   })
 })
 
+export const ProductStockSchema = z.object({
+  uuid: z.string(),
+  quantity: z.number(),
+  price: z.number()
+})
+
 export interface BoxItem {
   quantity: string
   content: string
 }
 
 export type Product = z.infer<typeof ProductSchema>;
+
+export type ProductStock = z.infer<typeof ProductStockSchema>;
