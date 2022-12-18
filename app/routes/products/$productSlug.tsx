@@ -1,7 +1,8 @@
 import invariant from 'tiny-invariant'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { getProduct, getProductStocks } from '~/models/product'
+import { getProduct } from '~/models/product'
+import { getProductStocks } from '~/models/product-stock'
 import { allProductCategories } from '~/models/product-category'
 import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner } from '~/components'
 

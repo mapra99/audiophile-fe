@@ -35,8 +35,3 @@ export const PurchaseCartSchema = z.object({
 })
 
 export type PurchaseCart = z.infer<typeof PurchaseCartSchema>;
-
-export interface PurchaseCartItemPayload {
-  stock_uuid: string
-  quantity: number
-}

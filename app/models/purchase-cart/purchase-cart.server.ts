@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import * as AudiophileClient from '~/utils/audiophile-client'
+import { addOrUpdateCartItem } from '~/models/purchase-cart-item'
 import { PurchaseCartSchema } from './schema'
 
-import type { PurchaseCartItemPayload } from './schema'
+import type { PurchaseCartItemPayload } from '~/models/purchase-cart-item'
 
 export const getStartedCarts = async (sessionId: string) => {
   const response = await AudiophileClient.sendRequest('get', 'purchase_carts?status=started', { sessionToken: sessionId })
@@ -34,17 +35,6 @@ export const createCart = async(sessionId: string, cartItems: PurchaseCartItemPa
 
   const cart = PurchaseCartSchema.parse(response)
   return cart
-}
-
-export const addOrUpdateCartItem = async (sessionId: string, cartUuid: string, item: PurchaseCartItemPayload) => {
-  await AudiophileClient.sendRequest('post', `purchase_carts/${cartUuid}/cart_items`, {
-    sessionToken: sessionId,
-    body: item
-  })
-}
-
-export const removeItemfromCart = async (sessionId: string, cartUuid: string, cartItemUuid: string) => {
-  await AudiophileClient.sendRequest('delete', `purchase_carts/${cartUuid}/cart_items/${cartItemUuid}`, { sessionToken: sessionId })
 }
 
 export const createOrUpdateCart = async(sessionId: string, cartItem: PurchaseCartItemPayload, cartUuid?: string) => {
