@@ -1,4 +1,5 @@
-import type { Product, ProductStock } from '~/models/product'
+import type { Product } from '~/models/product'
+import type { ProductStock } from '~/models/product-stock'
 
 export interface ProductHeadingpProps {
   product: Product

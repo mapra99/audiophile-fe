@@ -1,7 +1,8 @@
 import { useState, createContext } from 'react';
 import { PurchaseCartSchema } from '~/models/purchase-cart'
 
-import type { PurchaseCart, PurchaseCartItemPayload } from '~/models/purchase-cart'
+import type { PurchaseCart } from '~/models/purchase-cart'
+import type { PurchaseCartItemPayload } from '~/models/purchase-cart-item'
 import type { IPurchaseCartContext, PurchaseCartProviderProps } from './types';
 
 export const PurchaseCartContext = createContext<IPurchaseCartContext>({

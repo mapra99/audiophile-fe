@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import type { PurchaseCart, PurchaseCartItemPayload } from '~/models/purchase-cart'
+import type { PurchaseCart } from '~/models/purchase-cart'
+import type { PurchaseCartItemPayload } from '~/models/purchase-cart-item'
 
 export interface IPurchaseCartContext {
   cart?: PurchaseCart
