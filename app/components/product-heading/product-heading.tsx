@@ -34,7 +34,7 @@ const ProductHeading = ({ product }: ProductHeadingpProps) => {
         </Text>
 
         <div className="flex gap-4 items-center">
-          <QuantityInput />
+          <QuantityInput value={1} />
           <Button variant="primary" className="py-3">
             Add to Cart
           </Button>

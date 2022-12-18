@@ -12,6 +12,7 @@ import { Footer, Header } from '~/components'
 import { allProductCategories } from '~/models/product-category'
 import { getLastStartedCart } from './models/purchase-cart';
 import * as SessionStorage from '~/utils/session-storage'
+import { PurchaseCartProvider } from '~/contexts/purchase-cart-context'
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
@@ -49,14 +50,16 @@ export default function App() {
         className="min-h-full flex flex-col data-[modal=open]:overflow-hidden"
         data-modal="closed"
       >
-        <Header categories={categories} activeCart={activeCart} />
-        <div className="flex-1">
-          <Outlet />
-        </div>
-        <Footer categories={categories} />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <PurchaseCartProvider activeCart={activeCart}>
+          <Header categories={categories} />
+          <div className="flex-1">
+            <Outlet />
+          </div>
+          <Footer categories={categories} />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </PurchaseCartProvider>
       </body>
     </html>
   );

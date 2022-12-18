@@ -1,23 +1,12 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { PurchaseCart as CartIcon } from '~/icons'
 import { PurchaseCartModal } from '~/components'
+import { PurchaseCartContext } from '~/contexts/purchase-cart-context'
 
-import type { PurchaseCart as PurchaseCartType } from '~/models/purchase-cart'
 import type { PurchaseCartProps } from "./types"
 
-const PurchaseCart = ({ activeCart }: PurchaseCartProps) => {
-  const [open, setOpen] = useState<boolean>(false)
-  const [cart] = useState<PurchaseCartType | undefined>(activeCart)
-
-  const openCartList = () => {
-    setOpen(true)
-    document.body.dataset["modal"] = 'open'
-  }
-
-  const closeCartList = () => {
-    setOpen(false)
-    document.body.dataset["modal"] = 'closed'
-  }
+const PurchaseCart = (_args: PurchaseCartProps) => {
+  const { cart, cartListOpen, openCartList, closeCartList } = useContext(PurchaseCartContext)
 
   return (
     <div className="relative">
@@ -25,7 +14,7 @@ const PurchaseCart = ({ activeCart }: PurchaseCartProps) => {
         <CartIcon className="w-6" />
       </button>
 
-      { open && (
+      { cartListOpen && (
         <PurchaseCartModal
           cart={cart}
           onClose={closeCartList}
