@@ -1,5 +1,4 @@
 import { Text, PurchaseCartSummaryItem, PurchaseCartSummaryFee } from '~/components'
-import formatCurrency from '~/utils/format-currency'
 
 import type { PurchaseCartSummaryProps } from './types'
 
