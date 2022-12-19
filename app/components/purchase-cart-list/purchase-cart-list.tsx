@@ -42,7 +42,7 @@ const PurchaseCartList = ({ cart, onClose }: PurchaseCartListProps) => {
         </Text>
       </div>
 
-      <ButtonLink variant="primary" to="/checkout" className="text-center">
+      <ButtonLink variant="primary" to="/checkout" className="text-center" onClick={onClose}>
         Checkout
       </ButtonLink>
     </div>
