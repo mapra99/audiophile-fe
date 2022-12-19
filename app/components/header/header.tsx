@@ -8,7 +8,7 @@ import { BREAKPT_LG } from '~/constants'
 
 import type { HeaderProps } from './types'
 
-const Header = ({ categories, activeCart }: HeaderProps) => {
+const Header = ({ categories }: HeaderProps) => {
   const [menuOpened, setMenuOpened] = useState<boolean>(false)
   const isBigScreen = useMediaQuery({ query: `(min-width: ${BREAKPT_LG}px)` })
 
@@ -56,7 +56,7 @@ const Header = ({ categories, activeCart }: HeaderProps) => {
           </nav>
         )}
 
-        <PurchaseCart activeCart={activeCart} />
+        <PurchaseCart />
       </div>
 
       { !isBigScreen && (
