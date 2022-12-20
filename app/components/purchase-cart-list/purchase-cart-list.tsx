@@ -4,7 +4,7 @@ import formatCurrency from '~/utils/format-currency'
 
 import type { PurchaseCartListProps } from './types'
 
-const PurchaseCartList = ({ cart, onClose }: PurchaseCartListProps) => {
+const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProps) => {
   const { items, total_price } = cart
 
   return (
@@ -18,7 +18,11 @@ const PurchaseCartList = ({ cart, onClose }: PurchaseCartListProps) => {
           Cart ({items.length})
         </Text>
 
-        <button className="text-base text-black opacity-50 underline">
+        <button
+          className="text-base text-black opacity-50 underline"
+          type="button"
+          onClick={onCartRemoval}
+        >
           Remove all
         </button>
       </div>

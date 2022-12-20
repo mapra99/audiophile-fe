@@ -40,7 +40,9 @@ export const sendRequest = async (method: RequestMethod, path: string, { authTok
   const url = buildUrl(path, apiVersion)
 
   const response = await fetch(url, request)
-  const result = await response.json();
+
+  let result
+  if(response.status !== 204) result = await response.json();
 
   if (!response.ok) throw new RequestError(response.status, result?.error);
 

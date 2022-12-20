@@ -49,3 +49,7 @@ export const createOrUpdateCart = async(sessionId: string, cartItem: PurchaseCar
     return createdCart
   }
 }
+
+export const removeCart = async (sessionId: string, cartUuid: string) => {
+  await AudiophileClient.sendRequest('delete', `purchase_carts/${cartUuid}`, { sessionToken: sessionId })
+}
