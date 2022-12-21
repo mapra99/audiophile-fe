@@ -1,11 +1,13 @@
+import { Link } from '@remix-run/react'
 import { Text, ButtonLink } from '~/components'
 import type { CategoryBannerProps } from './types'
 
 const CategoryBanner = ({ category }: CategoryBannerProps) => {
   const { name, slug, image } = category
+  const categoryPath = `/categories/${slug}`
 
   return (
-    <div className="-mt-16 flex-1 lg:-mt-20">
+    <Link className="-mt-16 flex-1 lg:-mt-20" to={categoryPath}>
       <img
           src={image.url}
           alt={`${name} icon`}
@@ -17,11 +19,11 @@ const CategoryBanner = ({ category }: CategoryBannerProps) => {
         <Text variant="body" as="h2" className="uppercase !font-bold text-center mb-3">
           { name }
         </Text>
-        <ButtonLink variant="tertiary" to={`/categories/${slug}`} className="justify-center !py-0 !px-0 mx-auto">
+        <ButtonLink variant="tertiary" to={categoryPath} className="justify-center !py-0 !px-0 mx-auto">
           Shop
         </ButtonLink>
       </div>
-    </div>
+    </Link>
   )
 }
 
