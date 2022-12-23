@@ -6,7 +6,7 @@ import { PurchaseCartContext } from '~/contexts/purchase-cart-context'
 import type { PurchaseCartProps } from "./types"
 
 const PurchaseCart = (_args: PurchaseCartProps) => {
-  const { cart, cartListOpen, openCartList, closeCartList } = useContext(PurchaseCartContext)
+  const { cart, cartListOpen, openCartList, closeCartList, removeCart } = useContext(PurchaseCartContext)
 
   return (
     <div className="relative">
@@ -18,6 +18,7 @@ const PurchaseCart = (_args: PurchaseCartProps) => {
         <PurchaseCartModal
           cart={cart}
           onClose={closeCartList}
+          onCartRemoval={removeCart}
         />
       )}
     </div>

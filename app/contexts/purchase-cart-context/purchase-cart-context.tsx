@@ -1,4 +1,5 @@
 import { useState, createContext } from 'react';
+import invariant from 'tiny-invariant'
 import { PurchaseCartSchema } from '~/models/purchase-cart'
 
 import type { PurchaseCart } from '~/models/purchase-cart'
@@ -9,7 +10,8 @@ export const PurchaseCartContext = createContext<IPurchaseCartContext>({
   cartListOpen: false,
   openCartList: () => {},
   closeCartList: () => {},
-  createOrUpdateCart: (_item: PurchaseCartItemPayload) => {}
+  createOrUpdateCart: (_item: PurchaseCartItemPayload) => {},
+  removeCart: () => {},
 })
 
 export const PurchaseCartProvider = ({ children, activeCart }: PurchaseCartProviderProps) => {
@@ -42,12 +44,20 @@ export const PurchaseCartProvider = ({ children, activeCart }: PurchaseCartProvi
     setCart(PurchaseCartSchema.parse(data.cart))
   }
 
+  const removeCart = async () => {
+    invariant(cart, "cart must exist")
+
+    const response = await fetch(`/api/purchase-carts/${cart.uuid}`, { method: 'delete' })
+    if (response.ok) setCart(undefined)
+  }
+
   const contextVal: IPurchaseCartContext = {
     cart,
     cartListOpen,
     openCartList,
     closeCartList,
-    createOrUpdateCart
+    createOrUpdateCart,
+    removeCart
   };
 
   return (
