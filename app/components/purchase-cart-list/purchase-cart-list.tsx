@@ -5,7 +5,9 @@ import formatCurrency from '~/utils/format-currency'
 import type { PurchaseCartListProps } from './types'
 
 const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProps) => {
-  const { items, total_price } = cart
+  const { items } = cart
+
+  const subtotal = items.reduce((cumPrice, item) => item.price + cumPrice, 0)
 
   return (
     <div className="bg-white py-8 px-7 rounded-lg relative max-w-sm mx-auto sm:ml-auto sm:mr-0">
@@ -38,11 +40,11 @@ const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProp
 
       <div className="flex justify-between mb-6 items-center">
         <Text variant="body" className="!font-medium opacity-50 uppercase" as="span">
-          Total
+          Subtotal
         </Text>
 
         <Text variant="heading-6" as="span">
-          { formatCurrency(total_price) }
+          { formatCurrency(subtotal) }
         </Text>
       </div>
 
