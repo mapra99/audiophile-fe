@@ -1,10 +1,20 @@
+import { useContext } from 'react'
 import { Text, QuantityInput } from '~/components'
+import { PurchaseCartContext } from '~/contexts/purchase-cart-context'
 import formatCurrency from '~/utils/format-currency'
 
 import type { PurchaseCartListItemProps } from './types'
 
 const PurchaseCartListItem = ({ cartItem }: PurchaseCartListItemProps) => {
-  const { uuid, stock: { product }, unit_price, quantity } = cartItem
+  const { createOrUpdateCart } = useContext(PurchaseCartContext)
+  const { uuid, stock: { uuid: stockUuid, product, quantity: stockQuantity }, unit_price, quantity } = cartItem
+
+  const handleItemChange = async (qty: number) => {
+    await createOrUpdateCart({
+      stock_uuid: stockUuid,
+      quantity: qty
+    })
+  }
 
   return (
     <div key={uuid} className="flex gap-4 items-center">
@@ -24,7 +34,7 @@ const PurchaseCartListItem = ({ cartItem }: PurchaseCartListItemProps) => {
       </div>
 
       <div className="flex-none">
-        <QuantityInput value={quantity} />
+        <QuantityInput value={quantity} onChange={handleItemChange} min={0} max={stockQuantity} />
       </div>
     </div>
   )
