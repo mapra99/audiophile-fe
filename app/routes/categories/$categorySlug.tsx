@@ -4,8 +4,11 @@ import invariant from "tiny-invariant"
 import { allProductCategories, getProductCategory } from "~/models/product-category"
 import { Heading, ProductBanner, CategoriesList, BestAudioBanner } from '~/components'
 import type { LoaderArgs } from "@remix-run/server-runtime"
+import trackPageView from "~/utils/track-page-view"
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
+  trackPageView(request)
+
   const { categorySlug } = params
   invariant(categorySlug, "Category slug is required")
 

@@ -4,10 +4,13 @@ import invariant from 'tiny-invariant'
 import { Text, PurchaseCartSummary } from '~/components'
 import { getLastStartedCart } from '~/models/purchase-cart'
 import * as SessionStorage from '~/utils/session-storage'
+import trackPageView from '~/utils/track-page-view'
 
 import type { LoaderArgs } from '@remix-run/node'
 
 export const loader = async ({ request }: LoaderArgs) => {
+  trackPageView(request)
+
   const { sessionId } = await SessionStorage.getOrCreateSessionId(request)
 
   const activeCart = await getLastStartedCart(sessionId)

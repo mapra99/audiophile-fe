@@ -5,10 +5,13 @@ import { getProduct } from '~/models/product'
 import { getProductStocks } from '~/models/product-stock'
 import { allProductCategories } from '~/models/product-category'
 import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner } from '~/components'
+import trackPageView from '~/utils/track-page-view'
 
 import type { LoaderArgs } from '@remix-run/node'
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
+  trackPageView(request)
+
   const { productSlug } = params
   invariant(productSlug, "Product slug is required")
 
