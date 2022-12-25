@@ -7,9 +7,11 @@ const TextInput = ({label, id, className, error, ...props}: TextInputProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between mb-2.5">
-        <label htmlFor={id} className={`text-xs font-bold leading-4 ${error ? 'text-danger' : ''}`}>
-          { label }
-        </label>
+        { label && (
+          <label htmlFor={id} className={`text-xs font-bold leading-4 ${error ? 'text-danger' : ''}`}>
+            { label }
+          </label>
+        )}
 
         { error && (
           <span className="text-xs font-medium leading-4 text-danger">

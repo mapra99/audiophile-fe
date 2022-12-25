@@ -1,0 +1,28 @@
+import * as AudiophileClient from '~/utils/audiophile-client'
+
+import { UserInfoPayload, CodeInfoPayload, AccessTokenSchema } from './schema'
+import { access } from 'fs'
+
+export const signUp = async (sessionId: string, userInfo: UserInfoPayload) => {
+  return await AudiophileClient.sendRequest('post', 'auth/signup', {
+    sessionToken: sessionId,
+    body: userInfo
+  })
+}
+
+export const login = async (sessionId: string, email: string) => {
+  return await AudiophileClient.sendRequest('post', 'auth/login', {
+    sessionToken: sessionId,
+    body: { email }
+  })
+}
+
+export const confirmCode = async(sessionId: string, codeInfo: CodeInfoPayload) => {
+  const response = await AudiophileClient.sendRequest('post', 'auth/confirmation', {
+    sessionToken: sessionId,
+    body: codeInfo
+  })
+
+  const accessToken = AccessTokenSchema.parse(response);
+  return accessToken
+}
