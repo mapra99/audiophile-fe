@@ -1,7 +1,7 @@
 import * as AudiophileClient from '~/utils/audiophile-client'
+import { AccessTokenSchema } from './schema'
 
-import { UserInfoPayload, CodeInfoPayload, AccessTokenSchema } from './schema'
-import { access } from 'fs'
+import type { UserInfoPayload, CodeInfoPayload } from './schema'
 
 export const signUp = async (sessionId: string, userInfo: UserInfoPayload) => {
   return await AudiophileClient.sendRequest('post', 'auth/signup', {

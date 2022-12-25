@@ -1,7 +1,6 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import type { PersistSessionParams } from './types'
-import { createSession } from '~/models/session'
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
