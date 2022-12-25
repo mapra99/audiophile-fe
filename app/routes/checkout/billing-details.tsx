@@ -64,8 +64,14 @@ export default () => {
       </Text>
 
       <Form className="flex flex-col gap-6" method="post">
-        <TextInput label="Name" id="name" name="name" placeholder="Enter your name" error={errors.name} />
-        <TextInput label="Email Address" id="email" name="email" placeholder="email@example.com" type="email" error={errors.email} />
+        <div className="flex flex-col gap-6 sm:flex-row sm:gap-4">
+          <div className="sm:flex-1">
+            <TextInput label="Name" id="name" name="name" placeholder="Enter your name" error={errors.name} />
+          </div>
+          <div className="sm:flex-1">
+            <TextInput label="Email Address" id="email" name="email" placeholder="email@example.com" type="email" error={errors.email} />
+          </div>
+        </div>
         <TextInput label="Phone Number" id="phone" name="phone" placeholder="+01 202-555-0136" type="phone" error={errors.phone} />
         { errors.general && (
           <Text as="p" variant="body" className="text-danger !text-xs">
