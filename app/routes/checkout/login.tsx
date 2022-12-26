@@ -5,8 +5,9 @@ import formDataToObject from '~/utils/form-data-to-object'
 import { getOrCreateSessionId } from '~/utils/session-storage'
 import RequestError from '~/errors/request-error'
 import { login } from '~/models/auth'
+import trackPageView from '~/utils/track-page-view'
 
-import type { ActionArgs } from '@remix-run/node'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import type { UserInfoPayload } from '~/models/auth'
 
 interface ValidationErrors {
@@ -19,6 +20,11 @@ const validateForm = (userInfo: UserInfoPayload) => {
   if (!userInfo.email) errors.email = 'Please enter your email'
 
   return errors
+}
+
+export const loader = async ({ request }: LoaderArgs) => {
+  trackPageView(request)
+  return null;
 }
 
 export const action = async ({ request }: ActionArgs) => {
