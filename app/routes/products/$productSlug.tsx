@@ -6,6 +6,7 @@ import { getProductStocks } from '~/models/product-stock'
 import { allProductCategories } from '~/models/product-category'
 import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner } from '~/components'
 import trackPageView from '~/utils/track-page-view'
+import goBack from '~/utils/go-back'
 
 import type { LoaderArgs } from '@remix-run/node'
 
@@ -30,8 +31,6 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
 export default () => {
   const { product, categories, stocks } = useLoaderData<typeof loader>()
-
-  const goBack = () => history.back()
 
   return (
     <div>

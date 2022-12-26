@@ -1,10 +1,12 @@
 import { Outlet, useLoaderData } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { Text, PurchaseCartSummary } from '~/components'
 import { getLastStartedCart } from '~/models/purchase-cart'
 import { getSessionId } from '~/utils/session-storage'
 import trackPageView from '~/utils/track-page-view'
+import { getAccessToken } from '~/utils/auth-storage'
+import goBack from '~/utils/go-back'
 
 import type { LoaderArgs } from '@remix-run/node'
 
@@ -15,14 +17,20 @@ export const loader = async ({ request }: LoaderArgs) => {
   invariant(sessionId, 'sessionId must exist')
 
   const activeCart = await getLastStartedCart(sessionId)
-  invariant(activeCart, 'There must be an existing started cart')
+  if(!activeCart) return redirect('/')
+
+  // checkout flow navigation
+  const url = new URL(request.url)
+  if (url.pathname === '/checkout') {
+    const accessToken = await getAccessToken(request)
+    if(!accessToken) return redirect('/checkout/billing-details')
+  }
 
   return json({ activeCart })
 }
 
 export default () => {
   const { activeCart } = useLoaderData()
-  const goBack = () => history.back()
 
   return (
     <div className="bg-gray">
