@@ -1,13 +1,13 @@
 import invariant from 'tiny-invariant'
 import { removeCart } from '~/models/purchase-cart'
-import * as SessionStorage from '~/utils/session-storage'
+import { getSessionId } from '~/utils/session-storage'
 
 import type { ActionArgs } from '@remix-run/node'
 
 export const action = async ({ params, request }: ActionArgs) => {
   if (request.method !== 'DELETE') return
 
-  const { sessionId } = await SessionStorage.getOrCreateSessionId(request)
+  const sessionId = await getSessionId(request)
   invariant(sessionId, 'there must be an active user session')
 
   const { cartUuid } = params

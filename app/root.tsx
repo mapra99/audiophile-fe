@@ -30,6 +30,7 @@ export const meta: MetaFunction = () => ({
 
 export const loader = async ({ request }: LoaderArgs) => {
   const categories = await allProductCategories();
+  console.log({ holi: "HOLI" })
   const { headers, sessionId } = await SessionStorage.getOrCreateSessionId(request)
   const activeCart = await getLastStartedCart(sessionId)
 

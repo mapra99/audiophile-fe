@@ -3,7 +3,7 @@ import { json } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { Text, PurchaseCartSummary } from '~/components'
 import { getLastStartedCart } from '~/models/purchase-cart'
-import * as SessionStorage from '~/utils/session-storage'
+import { getSessionId } from '~/utils/session-storage'
 import trackPageView from '~/utils/track-page-view'
 
 import type { LoaderArgs } from '@remix-run/node'
@@ -11,7 +11,8 @@ import type { LoaderArgs } from '@remix-run/node'
 export const loader = async ({ request }: LoaderArgs) => {
   trackPageView(request)
 
-  const { sessionId } = await SessionStorage.getOrCreateSessionId(request)
+  const sessionId = await getSessionId(request)
+  invariant(sessionId, 'sessionId must exist')
 
   const activeCart = await getLastStartedCart(sessionId)
   invariant(activeCart, 'There must be an existing started cart')
