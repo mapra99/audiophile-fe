@@ -1,15 +1,20 @@
 import { Outlet, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
+import invariant from 'tiny-invariant'
 import { Text, PurchaseCartSummary } from '~/components'
 import { getLastStartedCart } from '~/models/purchase-cart'
-import { getOrCreateSessionId } from '~/utils/session-storage'
+import { getSessionId } from '~/utils/session-storage'
+import trackPageView from '~/utils/track-page-view'
 import { getAccessToken } from '~/utils/auth-storage'
 import goBack from '~/utils/go-back'
 
 import type { LoaderArgs } from '@remix-run/node'
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const { sessionId } = await getOrCreateSessionId(request)
+  trackPageView(request)
+
+  const sessionId = await getSessionId(request)
+  invariant(sessionId, 'sessionId must exist')
 
   const activeCart = await getLastStartedCart(sessionId)
   if(!activeCart) return redirect('/')

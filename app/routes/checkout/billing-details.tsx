@@ -7,8 +7,9 @@ import * as SessionStorage from '~/utils/session-storage'
 import formDataToObject from '~/utils/form-data-to-object'
 import RequestError from '~/errors/request-error'
 import { PHONE_REGEXP } from '~/constants'
+import trackPageView from '~/utils/track-page-view'
 
-import type { ActionArgs } from '@remix-run/node'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import type { UserInfoPayload } from '~/models/auth'
 
 interface ValidationErrors {
@@ -26,6 +27,11 @@ const validateForm = (userInfo: UserInfoPayload) => {
   if (!PHONE_REGEXP.test(userInfo.phone)) errors.phone = 'Please enter a valid nubmer'
 
   return errors
+}
+
+export const loader = async ({ request }: LoaderArgs) => {
+  trackPageView(request)
+  return null;
 }
 
 export const action = async ({ request }: ActionArgs) => {
