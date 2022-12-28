@@ -75,7 +75,7 @@ export default () => {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-6">
         <Text variant="body" className="!font-bold mb-6">
           Did we get it right?
         </Text>
