@@ -73,8 +73,6 @@ export default () => {
     mapboxToken
   })
 
-  const { street_address, postal_code, city, country, extra_info } = location
-
   return (
     <div>
       <div className="flex justify-between">
