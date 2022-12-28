@@ -9,6 +9,7 @@ export interface IPurchaseCartContext {
   closeCartList: () => void,
   createOrUpdateCart: (item: PurchaseCartItemPayload) => void
   removeCart: () => void
+  removeCartItem: (itemUuid: string) => void
 }
 
 export interface PurchaseCartProviderProps {

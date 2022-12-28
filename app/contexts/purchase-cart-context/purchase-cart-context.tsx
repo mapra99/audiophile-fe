@@ -12,6 +12,7 @@ export const PurchaseCartContext = createContext<IPurchaseCartContext>({
   closeCartList: () => {},
   createOrUpdateCart: (_item: PurchaseCartItemPayload) => {},
   removeCart: () => {},
+  removeCartItem: (_itemUuid: string) => {}
 })
 
 export const PurchaseCartProvider = ({ children, activeCart }: PurchaseCartProviderProps) => {
@@ -51,13 +52,32 @@ export const PurchaseCartProvider = ({ children, activeCart }: PurchaseCartProvi
     if (response.ok) setCart(undefined)
   }
 
+  const removeCartItem = async (itemUuid: string) => {
+    invariant(cart, "cart must exist")
+
+    const response = await fetch(`/api/purchase-carts/items/${itemUuid}`, { method: 'delete' })
+    if (!response.ok) throw new Error(`Something went wrong while deleting item ${itemUuid} from cart. Status ${response.status}`)
+
+    const updatedCartItems = cart.items.filter(item => item.uuid !== itemUuid)
+
+    if (updatedCartItems.length) {
+      setCart({
+        ...cart,
+        items: updatedCartItems
+      })
+    } else {
+      await removeCart();
+    }
+  }
+
   const contextVal: IPurchaseCartContext = {
     cart,
     cartListOpen,
     openCartList,
     closeCartList,
     createOrUpdateCart,
-    removeCart
+    removeCart,
+    removeCartItem
   };
 
   return (
