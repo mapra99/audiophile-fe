@@ -1,12 +1,12 @@
 import { useLoaderData, Form } from "@remix-run/react"
 import { json, redirect } from '@remix-run/node'
 import invariant from "tiny-invariant"
-import { Text, Button } from '~/components'
+import { Text, Button, LocationInfo } from '~/components'
 import useMap from '~/hooks/use-map'
 import { getAccessToken } from '~/utils/auth-storage'
 import { getSessionId } from "~/utils/session-storage"
 import trackPageView from '~/utils/track-page-view'
-import { getLocation } from '~/models/location'
+import { getLocation, deleteLocation } from '~/models/location'
 import { getLastStartedCart, updateCartLocation } from '~/models/purchase-cart'
 
 import type { LoaderArgs, LinksFunction } from "@remix-run/node"
@@ -35,6 +35,10 @@ export const loader = async ({ request }: LoaderArgs) => {
 export const action = async({ request }: LoaderArgs) => {
   const { method } = request
 
+  const url = new URL(request.url)
+  const locationUuid = url.searchParams.get('uuid')
+  invariant(locationUuid, 'uuid must be present in URL')
+
   if (method === 'POST') {
     const sessionId = await getSessionId(request);
     invariant(sessionId, 'sessionId must exist')
@@ -42,13 +46,15 @@ export const action = async({ request }: LoaderArgs) => {
     const activeCart = await getLastStartedCart(sessionId)
     invariant(activeCart, 'there must be an active started cart')
 
-    const url = new URL(request.url)
-    const locationUuid = url.searchParams.get('uuid')
-    invariant(locationUuid, 'uuid must be present in URL')
-
     await updateCartLocation(sessionId, activeCart.uuid, locationUuid)
+
     return redirect('/checkout')
   } else if (method === 'DELETE') {
+    const accessToken = await getAccessToken(request)
+    invariant(accessToken, 'user must be authenticated')
+
+    await deleteLocation(accessToken, locationUuid)
+
     return redirect('/checkout/shipping-info')
   }
 
@@ -76,10 +82,9 @@ export default () => {
           Did we get it right?
         </Text>
 
-        <div className="flex flex-col gap-1 mb-4 text-right">
-          <Text variant="body" as="span" className="!leading-none">{ street_address }</Text>
-          <Text variant="body" as="span" className="!leading-none">{ city }, { country }</Text>
-          <Text variant="body" as="span" className="!leading-none">{ postal_code } { extra_info }</Text>
+        
+        <div className="mb-4 text-right">
+          <LocationInfo location={location} />
         </div>
       </div>
 

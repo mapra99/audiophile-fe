@@ -1,90 +1,99 @@
-import { Form, useActionData } from '@remix-run/react'
+import { useLoaderData, Form, Link, useActionData } from "@remix-run/react"
 import { json, redirect } from '@remix-run/node'
-import invariant from 'tiny-invariant'
-import { Text, TextInput, Button } from '~/components'
-import { createLocation } from '~/models/location'
-import formDataToObject from '~/utils/form-data-to-object'
-import emptyObject from '~/utils/empty-object'
-import { getAccessToken } from '~/utils/auth-storage'
-import RequestError from '~/errors/request-error'
+import invariant from "tiny-invariant"
+import { Text, RadioInput, LocationInfo, Button } from '~/components'
+import { getAllLocations } from '~/models/location'
+import { getLastStartedCart, updateCartLocation } from '~/models/purchase-cart'
+import trackPageView from "~/utils/track-page-view"
+import { getAccessToken } from "~/utils/auth-storage"
+import { getSessionId } from '~/utils/session-storage'
+import formDataToObject from "~/utils/form-data-to-object"
 
-import type { LoaderArgs } from '@remix-run/node'
-import type { LocationPayload } from '~/models/location'
+import type { LoaderArgs, ActionArgs } from "@remix-run/node"
+import emptyObject from "~/utils/empty-object"
 
-interface FormErrors {
-  general?: string
-  street_address?: string
-  city?: string
-  country?: string
-  postal_code?: string
-  extra_info?: string
+interface ValidationErrors {
+  location_uuid?: string
 }
 
-const validateForm = (data: LocationPayload) => {
-  const errors = {} as FormErrors
+interface FormDataArgs {
+  location_uuid: string
+}
 
-  const { street_address, postal_code, city, country } = data
-  if (!street_address) errors.street_address = "Please add your street address"
-  if (!postal_code) errors.postal_code = "Please add your ZIP Code"
-  if (!city) errors.city = "Please add your city"
-  if (!country) errors.country = "Please add your country"
+export const loader = async ({ request }: LoaderArgs) => {
+  trackPageView(request)
+
+  const accessToken = await getAccessToken(request);
+  invariant(accessToken, 'user is not authenticated')
+
+  const locations = await getAllLocations(accessToken)
+  if (!locations.length) return redirect('/checkout/shipping-info/new-location')
+
+  return json({ locations })
+}
+
+const validateForm = ({ location_uuid }: FormDataArgs) => {
+  const errors = {} as ValidationErrors
+  if (!location_uuid) errors.location_uuid = 'Please pick one address'
 
   return errors
 }
 
-export const action = async ({ request }: LoaderArgs) => {
-  const formData = await request.formData()
+export const action = async ({ request }: ActionArgs) => {
+  const formData = await request.formData();
   const data = formDataToObject(formData)
 
   const errors = validateForm(data)
-  if (emptyObject(errors)) return json({ errors })
+  if (!emptyObject(errors)) return json({ errors })
 
-  const accessToken = await getAccessToken(request)
-  invariant(accessToken, 'user must be authenticated')
+  const sessionId = await getSessionId(request)
+  invariant(sessionId, 'sessionId must exist')
 
-  try {
-    const location = await createLocation(accessToken, data)
+  const activeCart = await getLastStartedCart(sessionId)
+  invariant(activeCart, 'there must be an active started cart')
 
-    return redirect(`/checkout/shipping-info/confirmation?uuid=${location.uuid}`)
-  } catch (error) {
-    if (!(error instanceof RequestError )) throw error
-    errors.general = error.message
+  await updateCartLocation(sessionId, activeCart.uuid, data.location_uuid)
 
-    return json({ errors })
-  }
+  return redirect('/checkout')
 }
 
 export default () => {
+  const { locations } = useLoaderData<typeof loader>()
   const result = useActionData<typeof action>()
-  const errors: FormErrors = result ? result.errors : {}
+
+  const errors: ValidationErrors = result ? result.errors : {}
 
   return (
-    <Form className="flex flex-col gap-6" method="post">
-      <TextInput id="street_address" name="street_address" label="Your Address" placeholder="1137 Williams Avenue" error={errors.street_address} />
-      <div className="flex flex-col gap-6 sm:flex-row sm:gap-4">
-        <div className="flex-1">
-          <TextInput id="postal_code" name="postal_code" label="ZIP Code" placeholder="10001" error={errors.postal_code} />
-        </div>
-        <div className="flex-1">
-          <TextInput id="city" name="city" label="City" placeholder="New York" error={errors.city} />
-        </div>
-      </div>
-      <div className="flex flex-col gap-6 sm:flex-row sm:gap-4">
-        <div className="flex-1">
-          <TextInput id="country" name="country" label="Country" placeholder="United States" error={errors.country} />
-        </div>
-        <div className="flex-1">
-          <TextInput id="extra_info" name="extra_info" label="Any Additional Details?" placeholder="Apt 102" error={errors.extra_info} />
-        </div>
-      </div>
+    <div>
+      <Text variant="body" className="!font-bold mb-6">
+        Choose one location to send your order
+      </Text>
 
-      { errors.general && (
-        <Text as="p" variant="body" className="text-danger !text-xs">
-          { errors.general }
-        </Text>
-      )}
+      <Form method="post" className="flex flex-col gap-4">
+        { locations.map(location => (
+          <RadioInput
+            key={location.uuid}
+            id={`location-uuid--${location.uuid}`}
+            name="location_uuid"
+            value={location.uuid}
+            label={<LocationInfo location={location} />}
+          />
+        ))}
 
-      <Button type="submit" variant="primary">Continue</Button>
-    </Form>
+        { errors.location_uuid && (
+          <Text variant="body" className="!text-danger">
+            { errors.location_uuid }
+          </Text>
+        ) }
+
+        <Link to="/checkout/shipping-info/new-location" className="text-orange underline">
+          Add new address
+        </Link>
+
+        <Button type="submit" variant="primary">
+          Continue
+        </Button>
+      </Form>
+    </div>
   )
 }
