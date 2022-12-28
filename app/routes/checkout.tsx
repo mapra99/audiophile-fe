@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import invariant from 'tiny-invariant'
-import { Text, PurchaseCartSummary } from '~/components'
+import { Text, PurchaseCartSummary, ProgressBar } from '~/components'
 import { getLastStartedCart } from '~/models/purchase-cart'
 import { getSessionId } from '~/utils/session-storage'
 import trackPageView from '~/utils/track-page-view'
@@ -20,18 +20,25 @@ export const loader = async ({ request }: LoaderArgs) => {
   if(!activeCart) return redirect('/')
 
   // checkout flow navigation
+  let progress = "0";
+
   const url = new URL(request.url)
-  if (url.pathname === '/checkout') {
-    const accessToken = await getAccessToken(request)
-    if(!accessToken) return redirect('/checkout/billing-details')
-    if (!activeCart.user_location_uuid) return redirect('/checkout/shipping-info')
+  const accessToken = await getAccessToken(request)
+  if(!accessToken) {
+    progress = "33%"
+    if (url.pathname === '/checkout') return redirect('/checkout/billing-details')
+  } else if (!activeCart.user_location_uuid) {
+    progress = "66%"
+    if (url.pathname === '/checkout') return redirect('/checkout/shipping-info')
+  } else {
+    progress = "100%"
   }
 
-  return json({ activeCart })
+  return json({ activeCart, progress })
 }
 
 export default () => {
-  const { activeCart } = useLoaderData()
+  const { activeCart, progress } = useLoaderData<typeof loader>()
 
   return (
     <div className="bg-gray">
@@ -45,7 +52,11 @@ export default () => {
 
       <div className="px-6 pb-24 sm:px-10 sm:pb-28">
         <div className="max-w-6xl mx-auto flex flex-col gap-8 lg:flex-row">
-          <div className="rounded-lg bg-white px-6 py-8 sm:p-8 lg:flex-1 lg:pt-14 lg:px-12 lg:pb-12">
+          <div className="rounded-lg bg-white px-6 py-8 sm:p-8 lg:flex-1 lg:pt-14 lg:px-12 lg:pb-12 relative">
+            <div className="absolute top-0 left-0 w-full">
+              <ProgressBar progress={progress} />
+            </div>
+
             <Text variant="heading-3" className="!text-3xl sm:!text-4xl mb-8 sm:mb-10" as="h2">
               Checkout
             </Text>
