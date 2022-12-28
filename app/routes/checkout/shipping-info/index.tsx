@@ -8,9 +8,9 @@ import trackPageView from "~/utils/track-page-view"
 import { getAccessToken } from "~/utils/auth-storage"
 import { getSessionId } from '~/utils/session-storage'
 import formDataToObject from "~/utils/form-data-to-object"
+import emptyObject from "~/utils/empty-object"
 
 import type { LoaderArgs, ActionArgs } from "@remix-run/node"
-import emptyObject from "~/utils/empty-object"
 
 interface ValidationErrors {
   location_uuid?: string
