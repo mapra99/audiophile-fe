@@ -1,12 +1,13 @@
 import { useContext } from 'react'
 import { Text, QuantityInput } from '~/components'
+import { TrashCan } from '~/icons'
 import { PurchaseCartContext } from '~/contexts/purchase-cart-context'
 import formatCurrency from '~/utils/format-currency'
 
 import type { PurchaseCartListItemProps } from './types'
 
 const PurchaseCartListItem = ({ cartItem }: PurchaseCartListItemProps) => {
-  const { createOrUpdateCart } = useContext(PurchaseCartContext)
+  const { createOrUpdateCart, removeCartItem } = useContext(PurchaseCartContext)
   const { uuid, stock: { uuid: stockUuid, product, quantity: stockQuantity }, unit_price, quantity } = cartItem
 
   const handleItemChange = async (qty: number) => {
@@ -33,8 +34,18 @@ const PurchaseCartListItem = ({ cartItem }: PurchaseCartListItemProps) => {
         </Text>
       </div>
 
+      { quantity === 1 && (
+        <button
+          className="bg-gray h-12 w-12 flex items-center justify-center hover:opacity-70 transition-all"
+          onClick={() => removeCartItem(uuid)}
+          type="button"
+        >
+          <TrashCan className="h-4" />
+        </button>
+      )}
+
       <div className="flex-none">
-        <QuantityInput value={quantity} onChange={handleItemChange} min={0} max={stockQuantity} />
+        <QuantityInput value={quantity} onChange={handleItemChange} min={1} max={stockQuantity} />
       </div>
     </div>
   )

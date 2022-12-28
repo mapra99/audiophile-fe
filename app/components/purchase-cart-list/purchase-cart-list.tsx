@@ -10,7 +10,7 @@ const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProp
   const subtotal = items.reduce((cumPrice, item) => item.price + cumPrice, 0)
 
   return (
-    <div className="bg-white py-8 px-7 rounded-lg relative max-w-sm mx-auto sm:ml-auto sm:mr-0">
+    <div className="bg-white py-8 px-7 rounded-lg relative max-w-md mx-auto sm:ml-auto sm:mr-0">
       <button onClick={onClose} className="absolute right-7 top-8 w-4">
         <Cross />
       </button>
