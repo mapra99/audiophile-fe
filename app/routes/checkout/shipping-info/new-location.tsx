@@ -7,8 +7,9 @@ import formDataToObject from '~/utils/form-data-to-object'
 import emptyObject from '~/utils/empty-object'
 import { getAccessToken } from '~/utils/auth-storage'
 import RequestError from '~/errors/request-error'
+import trackPageView from '~/utils/track-page-view'
 
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import type { LocationPayload } from '~/models/location'
 
 interface FormErrors {
@@ -32,7 +33,12 @@ const validateForm = (data: LocationPayload) => {
   return errors
 }
 
-export const action = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderArgs) => {
+  trackPageView(request)
+  return null
+}
+
+export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData()
   const data = formDataToObject(formData)
 
