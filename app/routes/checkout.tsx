@@ -24,6 +24,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   if (url.pathname === '/checkout') {
     const accessToken = await getAccessToken(request)
     if(!accessToken) return redirect('/checkout/billing-details')
+    if (!activeCart.user_location_uuid) return redirect('/checkout/shipping-info')
   }
 
   return json({ activeCart })
