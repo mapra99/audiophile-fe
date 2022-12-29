@@ -1,5 +1,6 @@
-import type { InputHTMLAttributes } from 'react'
+import type { ReactNode, InputHTMLAttributes } from 'react'
 
 export interface RadioInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string
+  label: ReactNode
+  className?: string
 }
