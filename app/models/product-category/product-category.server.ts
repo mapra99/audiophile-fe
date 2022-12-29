@@ -9,6 +9,13 @@ export const allProductCategories = async () => {
   return categories
 }
 
+export const allAvailableProductCategories = async () => {
+  const allCategories = await allProductCategories();
+  const filteredCategories = allCategories.filter(category => category.products.length > 0)
+
+  return filteredCategories
+}
+
 export const getProductCategory = async (slug: string) => {
   const response = await AudiophileClient.sendRequest('get', `product_categories/${slug}`)
   const category = ProductCategorySchema.parse(response)

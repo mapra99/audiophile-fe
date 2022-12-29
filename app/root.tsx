@@ -9,7 +9,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { Footer, Header } from '~/components'
-import { allProductCategories } from '~/models/product-category'
+import { allAvailableProductCategories } from '~/models/product-category'
 import { getLastStartedCart } from './models/purchase-cart';
 import * as SessionStorage from '~/utils/session-storage'
 import { PurchaseCartProvider } from '~/contexts/purchase-cart-context'
@@ -29,7 +29,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const categories = await allProductCategories();
+  const categories = await allAvailableProductCategories();
   const { headers, sessionId } = await SessionStorage.getOrCreateSessionId(request)
   const activeCart = await getLastStartedCart(sessionId)
 

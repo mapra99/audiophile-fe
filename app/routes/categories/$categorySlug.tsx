@@ -1,7 +1,7 @@
 import { useLoaderData } from "@remix-run/react"
 import { json } from '@remix-run/node'
 import invariant from "tiny-invariant"
-import { allProductCategories, getProductCategory } from "~/models/product-category"
+import { allAvailableProductCategories, getProductCategory } from "~/models/product-category"
 import { Heading, ProductBanner, CategoriesList, BestAudioBanner } from '~/components'
 import type { LoaderArgs } from "@remix-run/server-runtime"
 import trackPageView from "~/utils/track-page-view"
@@ -19,7 +19,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     throw new Response("Not Found", { status: 404 })
   }
 
-  const categories = await allProductCategories()
+  const categories = await allAvailableProductCategories()
   return json({ currentCategory, categories })
 }
 
