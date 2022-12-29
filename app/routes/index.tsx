@@ -2,7 +2,7 @@ import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { HomeHero, CategoriesList, BestAudioBanner, HomeProductBanners } from '~/components'
 import { featuredProducts, homepageProducts } from '~/models/product'
-import { allProductCategories } from '~/models/product-category'
+import { allAvailableProductCategories } from '~/models/product-category'
 import getRandom from '~/utils/get-random'
 import trackPageView from '~/utils/track-page-view'
 
@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const products = await featuredProducts()
   const featuredProduct = getRandom(products)
 
-  const categories = await allProductCategories();
+  const categories = await allAvailableProductCategories();
   const bannerProducts = await homepageProducts();
 
   return json({ featuredProduct, categories, bannerProducts })

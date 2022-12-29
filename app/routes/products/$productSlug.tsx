@@ -3,7 +3,7 @@ import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { getProduct } from '~/models/product'
 import { getProductStocks } from '~/models/product-stock'
-import { allProductCategories } from '~/models/product-category'
+import { allAvailableProductCategories } from '~/models/product-category'
 import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner } from '~/components'
 import trackPageView from '~/utils/track-page-view'
 import goBack from '~/utils/go-back'
@@ -24,7 +24,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   }
 
   const stocks = await getProductStocks(productSlug)
-  const categories = await allProductCategories()
+  const categories = await allAvailableProductCategories()
 
   return json({ product, categories, stocks })
 }
