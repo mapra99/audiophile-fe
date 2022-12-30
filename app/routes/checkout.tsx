@@ -32,6 +32,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     if (url.pathname === '/checkout') return redirect('/checkout/shipping-info')
   } else {
     progress = "100%"
+    if (url.pathname === '/checkout') return redirect('/checkout/payment')
   }
 
   return json({ activeCart, progress })
