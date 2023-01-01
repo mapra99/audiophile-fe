@@ -7,7 +7,7 @@ export const PaymentSchema = z.object({
   purchase_cart: z.object({
     uuid: z.string()
   }),
-  client_secret: z.string()
+  client_secret: z.string().optional()
 })
 
 export type Payment = z.infer<typeof PaymentSchema>

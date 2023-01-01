@@ -17,7 +17,6 @@ export const loader = async ({ request }: LoaderArgs) => {
   invariant(sessionId, 'sessionId must exist')
 
   const activeCart = await getLastStartedCart(sessionId)
-  if(!activeCart) return redirect('/')
 
   // checkout flow navigation
   let progress = "0";
@@ -25,14 +24,27 @@ export const loader = async ({ request }: LoaderArgs) => {
   const url = new URL(request.url)
   const accessToken = await getAccessToken(request)
   if(!accessToken) {
-    progress = "33%"
+    progress = "25%"
     if (url.pathname === '/checkout') return redirect('/checkout/billing-details')
-  } else if (!activeCart.user_location_uuid) {
-    progress = "66%"
+  } else if (!activeCart?.user_location_uuid) {
+    progress = "50%"
     if (url.pathname === '/checkout') return redirect('/checkout/shipping-info')
-  } else {
-    progress = "100%"
+  } else if (!url.searchParams.get('payment_intent') || !url.searchParams.get('redirect_status')) {
+    progress = "75%"
     if (url.pathname === '/checkout') return redirect('/checkout/payment')
+  } else {
+    progress = '100%'
+
+    if (url.pathname === '/checkout') {
+      const paymentStatus = url.searchParams.get('redirect_status')
+      const paymentUuid = url.searchParams.get('payment_uuid')
+  
+      if (paymentStatus === 'succeeded') {
+        return redirect(`/checkout/thank-you?payment_uuid=${paymentUuid}`)
+      } else {
+        return redirect(`/checkout/payment-failed?payment_uuid=${paymentUuid}`)
+      }
+    }
   }
 
   return json({ activeCart, progress })

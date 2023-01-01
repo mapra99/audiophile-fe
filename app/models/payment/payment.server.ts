@@ -10,3 +10,10 @@ export const startPayment = async (authToken: string, cartUuid: string) => {
   const payment = PaymentSchema.parse(response)
   return payment
 }
+
+export const getPayment = async (authToken: string, uuid: string) => {
+  const response = await AudiophileClient.sendRequest('get', `payments/${uuid}`, { authToken })
+
+  const payment = PaymentSchema.parse(response)
+  return payment
+}

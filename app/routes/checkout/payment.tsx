@@ -9,9 +9,14 @@ import { getSessionId } from "~/utils/session-storage"
 import { startPayment } from "~/models/payment"
 import { getLastStartedCart } from "~/models/purchase-cart"
 import { Elements } from "@stripe/react-stripe-js";
+import stripeStylesheetUrl from "~/styles/stripe-elements.css";
 
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderArgs, LinksFunction } from '@remix-run/node'
 import type { Stripe, StripeElementsOptions } from '@stripe/stripe-js'
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: stripeStylesheetUrl }];
+};
 
 export const loader = async ({ request }: LoaderArgs) => {
   const accessToken = await getAccessToken(request)
@@ -24,24 +29,24 @@ export const loader = async ({ request }: LoaderArgs) => {
   invariant(activeCart, 'cart must be started')
 
   const payment = await startPayment(accessToken, activeCart.uuid)
-  const stripe_key = process.env.STRIPE_PUBLIC_API_KEY
+  const stripeKey = process.env.STRIPE_PUBLIC_API_KEY
+  const redirectUrl = `${process.env.BASE_URL}/checkout?payment_uuid=${payment.uuid}`
 
-  return json({ payment, stripe_key })
+  return json({ payment, stripeKey, redirectUrl })
 }
 
 export default () => {
-  const { payment, stripe_key } = useLoaderData<typeof loader>()
+  const { payment, stripeKey, redirectUrl } = useLoaderData<typeof loader>()
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null)
 
   useEffect(() => {
-    if (!stripe_key) return
+    if (!stripeKey) return
     if (stripePromise) return
 
-    console.log("HOLI")
     setStripePromise(
-      loadStripe(stripe_key)
+      loadStripe(stripeKey)
     )
-  }, [stripe_key, stripePromise])
+  }, [stripeKey, stripePromise])
 
   const options: StripeElementsOptions = {
     clientSecret: payment.client_secret,
@@ -56,11 +61,13 @@ export default () => {
         Payment
       </Text>
 
-      { stripePromise && (
-        <Elements options={options} stripe={stripePromise}>
-          <PaymentForm />
-        </Elements>
-      )}
+      <div className="payment-root">
+        { stripePromise && (
+          <Elements options={options} stripe={stripePromise}>
+            <PaymentForm redirectUrl={redirectUrl} />
+          </Elements>
+        )}
+      </div>
     </div>
   )
 }

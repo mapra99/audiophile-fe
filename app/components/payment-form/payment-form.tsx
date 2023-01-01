@@ -5,14 +5,18 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import invariant from 'tiny-invariant'
 
-const PaymentForm = () => {
+import type { FormEventHandler } from 'react'
+import type { PaymentIntentResult } from '@stripe/stripe-js'
+import type { PaymentFormProps } from "./types";
+
+const PaymentForm = ({ redirectUrl }: PaymentFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<string | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!stripe) {
@@ -27,7 +31,9 @@ const PaymentForm = () => {
       return;
     }
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }: PaymentIntentResult) => {
+      invariant(paymentIntent, 'payment intent must exist')
+
       switch (paymentIntent.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
@@ -45,7 +51,7 @@ const PaymentForm = () => {
     });
   }, [stripe]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
@@ -59,8 +65,7 @@ const PaymentForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: redirectUrl
       },
     });
 
@@ -78,17 +83,10 @@ const PaymentForm = () => {
     setIsLoading(false);
   };
 
-  const paymentElementOptions = {
-    layout: "tabs"
-  }
-
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
+      <LinkAuthenticationElement id="link-authentication-element" className="!font-bold" />
+      <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
