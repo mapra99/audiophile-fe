@@ -80,7 +80,7 @@ export default () => {
         <Text as="p" variant="body">
           We just sent you a verification code to your email. Please enter it below
         </Text>
-        <TextInput id="code" name="code" placeholder="123456" error={errors.code} />
+        <TextInput id="code" name="code" placeholder="123456" error={errors.code} type="tel" />
         { errors.general && (
           <Text as="p" variant="body" className="text-danger !text-xs">
             { errors.general }
