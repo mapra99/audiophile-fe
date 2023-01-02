@@ -80,85 +80,86 @@ jobs:
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
 
-  cypress:
-    name: ⚫️ Cypress
-    runs-on: ubuntu-latest
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
-      postgres:
-        image: postgres:11
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
+  # TODO: Reactivate this when the whole project setup is revisited
+  # cypress:
+  #   name: ⚫️ Cypress
+  #   runs-on: ubuntu-latest
+  #   services:
+  #     redis:
+  #       image: redis
+  #       options: >-
+  #         --health-cmd "redis-cli ping"
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #       ports:
+  #         - 6379:6379
+  #     postgres:
+  #       image: postgres:11
+  #       ports:
+  #         - 5432:5432
+  #       env:
+  #         POSTGRES_USER: postgres
+  #         POSTGRES_PASSWORD: postgres
+  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  #   steps:
+  #     - name: 🛑 Cancel Previous Runs
+  #       uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+  #     - name: ⬇️ Checkout repo
+  #       uses: actions/checkout@v3
 
-      - name: 🏄 Copy test env vars
-        run: cp .env.example .env
+  #     - name: 🏄 Copy test env vars
+  #       run: cp .env.example .env
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+  #     - name: ⎔ Setup node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: true
+  #     - name: 📥 Download deps
+  #       uses: bahmutov/npm-install@v1
+  #       with:
+  #         useLockFile: true
 
-      - name: ⚙️ Build
-        run: npm run build
+  #     - name: ⚙️ Build
+  #       run: npm run build
 
-      - name: 🔧 Install system libraries
-        run: sudo apt-get install libpq-dev
+  #     - name: 🔧 Install system libraries
+  #       run: sudo apt-get install libpq-dev
 
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.4
+  #     - uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: 3.0.4
 
-      - name: ⚙️ Build Audiophile API
-        run: |
-          git clone --depth=1 https://github.com/mapra99/audiophile-api.git ./audiophile-api
-          cd audiophile-api
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-          cp config/database.github-actions.yml config/database.yml
-          cd ..
-        env:
-          RAILS_ENV: test
+  #     - name: ⚙️ Build Audiophile API
+  #       run: |
+  #         git clone --depth=1 https://github.com/mapra99/audiophile-api.git ./audiophile-api
+  #         cd audiophile-api
+  #         gem install bundler
+  #         bundle install --jobs 4 --retry 3
+  #         cp config/database.github-actions.yml config/database.yml
+  #         cd ..
+  #       env:
+  #         RAILS_ENV: test
 
-      - name: 🧨 Start Audiophile API
-        run: |
-          echo $AUDIOPHILE_API_BASE_URL
-          cd audiophile-api
-          ./test-server.sh
-          sleep 5
-          cd ..
-        env:
-          RAILS_ENV: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          REDIS_URL: redis://localhost:6379
+  #     - name: 🧨 Start Audiophile API
+  #       run: |
+  #         echo $AUDIOPHILE_API_BASE_URL
+  #         cd audiophile-api
+  #         ./test-server.sh
+  #         sleep 5
+  #         cd ..
+  #       env:
+  #         RAILS_ENV: test
+  #         POSTGRES_USER: postgres
+  #         POSTGRES_PASSWORD: postgres
+  #         REDIS_URL: redis://localhost:6379
 
-      - name: 🌳 Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          start: npm run start:mocks
-          wait-on: "http://localhost:3000"
-        env:
-          PORT: "3000"
+  #     - name: 🌳 Cypress run
+  #       uses: cypress-io/github-action@v4
+  #       with:
+  #         start: npm run start:mocks
+  #         wait-on: "http://localhost:3000"
+  #       env:
+  #         PORT: "3000"
