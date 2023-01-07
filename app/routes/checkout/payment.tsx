@@ -7,7 +7,7 @@ import { Text, PaymentForm } from '~/components'
 import { getAccessToken } from "~/utils/auth-storage"
 import { getSessionId } from "~/utils/session-storage"
 import { startPayment } from "~/models/payment"
-import { getLastStartedCart } from "~/models/purchase-cart"
+import { getCartDetails } from "~/models/purchase-cart"
 import { Elements } from "@stripe/react-stripe-js";
 import stripeStylesheetUrl from "~/styles/stripe-elements.css";
 
@@ -21,6 +21,7 @@ export const links: LinksFunction = () => {
 export const loader = async ({ request }: LoaderArgs) => {
   const url = new URL(request.url)
   const cartUuid = url.searchParams.get('cart_uuid')
+  invariant(cartUuid, 'cart_uuid param must be present')
 
   const accessToken = await getAccessToken(request)
   invariant(accessToken, 'user must be authenticated')
@@ -28,10 +29,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const sessionId = await getSessionId(request)
   invariant(sessionId, 'session must exist')
 
-  const activeCart = await getLastStartedCart(sessionId)
-  invariant(activeCart, 'cart must be started')
-
-  const payment = await startPayment(accessToken, activeCart.uuid)
+  const payment = await startPayment(accessToken, cartUuid)
   const stripeKey = process.env.STRIPE_PUBLIC_API_KEY
   const redirectUrl = `${process.env.BASE_URL}/checkout?payment_uuid=${payment.uuid}&cart_uuid=${cartUuid}`
 

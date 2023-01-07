@@ -30,7 +30,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   invariant(accessToken, 'user is not authenticated')
 
   const locations = await getAllLocations(accessToken)
-  if (!locations.length) return redirect('/checkout/shipping-info/new-location')
+  if (!locations.length) return redirect(`/checkout/shipping-info/new-location?cart_uuid=${cartUuid}`)
 
   return json({ locations, cartUuid })
 }
