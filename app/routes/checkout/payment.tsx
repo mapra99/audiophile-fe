@@ -7,7 +7,6 @@ import { Text, PaymentForm } from '~/components'
 import { getAccessToken } from "~/utils/auth-storage"
 import { getSessionId } from "~/utils/session-storage"
 import { startPayment } from "~/models/payment"
-import { getCartDetails } from "~/models/purchase-cart"
 import { Elements } from "@stripe/react-stripe-js";
 import stripeStylesheetUrl from "~/styles/stripe-elements.css";
 
