@@ -1,4 +1,4 @@
-import { Link, Form, useActionData } from '@remix-run/react'
+import { Link, Form, useActionData, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import { Text, TextInput, Button } from '~/components'
 import useMaskedInput from '~/hooks/use-masked-input'
@@ -31,7 +31,11 @@ const validateForm = (userInfo: UserInfoPayload) => {
 
 export const loader = async ({ request }: LoaderArgs) => {
   trackPageView(request)
-  return null;
+
+  const url = new URL(request.url)
+  const cartUuid = url.searchParams.get('cart_uuid')
+
+  return json({ cartUuid });
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -51,10 +55,14 @@ export const action = async ({ request }: ActionArgs) => {
 
   if (Object.keys(errors).length) return json({ errors })
 
-  return redirect(`/checkout/billing-details/confirmation-code?email=${encodeURIComponent(userInfo.email)}`)
+  const url = new URL(request.url)
+  const cartUuid = url.searchParams.get('cart_uuid')
+
+  return redirect(`/checkout/billing-details/confirmation-code?email=${encodeURIComponent(userInfo.email)}&cart_uuid=${cartUuid}`)
 }
 
 export default () => {
+  const { cartUuid } = useLoaderData<typeof loader>();
   const result = useActionData<typeof action>()
   const errors: ValidationErrors = result ? result.errors : {}
 
@@ -86,7 +94,7 @@ export default () => {
         )}
 
         <Text variant="body" as="p">
-          Already a user? <Link to="/checkout/billing-details/login" className="text-orange underline hover:cursor-pointer">Login here</Link>
+          Already a user? <Link to={`/checkout/billing-details/login?cart_uuid=${cartUuid}`} className="text-orange underline hover:cursor-pointer">Login here</Link>
         </Text>
 
         <Button type="submit" variant="primary">

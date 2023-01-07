@@ -5,7 +5,7 @@ import formatCurrency from '~/utils/format-currency'
 import type { PurchaseCartListProps } from './types'
 
 const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProps) => {
-  const { items } = cart
+  const { items, uuid } = cart
 
   const subtotal = items.reduce((cumPrice, item) => item.price + cumPrice, 0)
 
@@ -48,7 +48,7 @@ const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProp
         </Text>
       </div>
 
-      <ButtonLink variant="primary" to="/checkout" className="text-center" onClick={onClose}>
+      <ButtonLink variant="primary" to={`/checkout?cart_uuid=${uuid}`} className="text-center" onClick={onClose}>
         Checkout
       </ButtonLink>
     </div>

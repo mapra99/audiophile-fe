@@ -23,13 +23,16 @@ interface FormDataArgs {
 export const loader = async ({ request }: LoaderArgs) => {
   trackPageView(request)
 
+  const url = new URL(request.url)
+  const cartUuid = url.searchParams.get('cart_uuid')
+
   const accessToken = await getAccessToken(request);
   invariant(accessToken, 'user is not authenticated')
 
   const locations = await getAllLocations(accessToken)
   if (!locations.length) return redirect('/checkout/shipping-info/new-location')
 
-  return json({ locations })
+  return json({ locations, cartUuid })
 }
 
 const validateForm = ({ location_uuid }: FormDataArgs) => {
@@ -54,11 +57,14 @@ export const action = async ({ request }: ActionArgs) => {
 
   await updateCartLocation(sessionId, activeCart.uuid, data.location_uuid)
 
-  return redirect('/checkout')
+  const url = new URL(request.url)
+  const cartUuid = url.searchParams.get('cart_uuid')
+
+  return redirect(`/checkout?cart_uuid=${cartUuid}`)
 }
 
 export default () => {
-  const { locations } = useLoaderData<typeof loader>()
+  const { locations, cartUuid } = useLoaderData<typeof loader>()
   const result = useActionData<typeof action>()
 
   const errors: ValidationErrors = result ? result.errors : {}
@@ -86,7 +92,7 @@ export default () => {
           </Text>
         ) }
 
-        <Link to="/checkout/shipping-info/new-location" className="text-orange underline">
+        <Link to={`/checkout/shipping-info/new-location?cart_uuid=${cartUuid}`} className="text-orange underline">
           Add new address
         </Link>
 

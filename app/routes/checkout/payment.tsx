@@ -19,6 +19,9 @@ export const links: LinksFunction = () => {
 };
 
 export const loader = async ({ request }: LoaderArgs) => {
+  const url = new URL(request.url)
+  const cartUuid = url.searchParams.get('cart_uuid')
+
   const accessToken = await getAccessToken(request)
   invariant(accessToken, 'user must be authenticated')
 
@@ -30,7 +33,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   const payment = await startPayment(accessToken, activeCart.uuid)
   const stripeKey = process.env.STRIPE_PUBLIC_API_KEY
-  const redirectUrl = `${process.env.BASE_URL}/checkout?payment_uuid=${payment.uuid}`
+  const redirectUrl = `${process.env.BASE_URL}/checkout?payment_uuid=${payment.uuid}&cart_uuid=${cartUuid}`
 
   return json({ payment, stripeKey, redirectUrl })
 }

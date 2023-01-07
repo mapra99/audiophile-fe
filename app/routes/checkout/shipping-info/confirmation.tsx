@@ -39,6 +39,8 @@ export const action = async({ request }: LoaderArgs) => {
   const locationUuid = url.searchParams.get('uuid')
   invariant(locationUuid, 'uuid must be present in URL')
 
+  const cartUuid = url.searchParams.get('cart_uuid')
+
   if (method === 'POST') {
     const sessionId = await getSessionId(request);
     invariant(sessionId, 'sessionId must exist')
@@ -48,14 +50,14 @@ export const action = async({ request }: LoaderArgs) => {
 
     await updateCartLocation(sessionId, activeCart.uuid, locationUuid)
 
-    return redirect('/checkout')
+    return redirect(`/checkout?cart_uuid=${cartUuid}`)
   } else if (method === 'DELETE') {
     const accessToken = await getAccessToken(request)
     invariant(accessToken, 'user must be authenticated')
 
     await deleteLocation(accessToken, locationUuid)
 
-    return redirect('/checkout/shipping-info')
+    return redirect(`/checkout/shipping-info?cart_uuid=${cartUuid}`)
   }
 
   return null
