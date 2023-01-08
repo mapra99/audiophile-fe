@@ -55,7 +55,9 @@ export const action = async ({ request }: ActionArgs) => {
       accessToken: tokenData.access_token
     })
 
-    return redirect(`/checkout`, { headers })
+    const cartUuid = url.searchParams.get('cart_uuid')
+
+    return redirect(`/checkout?cart_uuid=${cartUuid}`, { headers })
   } catch (error) {
     if (!(error instanceof RequestError)) throw error
 

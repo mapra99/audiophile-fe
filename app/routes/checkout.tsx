@@ -2,7 +2,7 @@ import { Outlet, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { Text, PurchaseCartSummary, ProgressBar } from '~/components'
-import { getLastStartedCart } from '~/models/purchase-cart'
+import { getCartDetails } from '~/models/purchase-cart'
 import { getSessionId } from '~/utils/session-storage'
 import trackPageView from '~/utils/track-page-view'
 import { getAccessToken } from '~/utils/auth-storage'
@@ -16,35 +16,58 @@ export const loader = async ({ request }: LoaderArgs) => {
   const sessionId = await getSessionId(request)
   invariant(sessionId, 'sessionId must exist')
 
-  const activeCart = await getLastStartedCart(sessionId)
-  if(!activeCart) return redirect('/')
+  const url = new URL(request.url)
+  const cartUuid = url.searchParams.get('cart_uuid')
+  invariant(cartUuid, 'cart_uuid param must be present')
+
+  const cart = await getCartDetails(sessionId, cartUuid)
+
+  const paymentIntent = url.searchParams.get('payment_intent')
+  const paymentUuid = url.searchParams.get('payment_uuid')
 
   // checkout flow navigation
   let progress = "0";
-
-  const url = new URL(request.url)
   const accessToken = await getAccessToken(request)
   if(!accessToken) {
-    progress = "33%"
-    if (url.pathname === '/checkout') return redirect('/checkout/billing-details')
-  } else if (!activeCart.user_location_uuid) {
-    progress = "66%"
-    if (url.pathname === '/checkout') return redirect('/checkout/shipping-info')
+    progress = "25%"
+    if (url.pathname === '/checkout') return redirect(`/checkout/billing-details?cart_uuid=${cartUuid}`)
+  } else if (!cart.user_location_uuid) {
+    progress = "50%"
+    if (url.pathname === '/checkout') return redirect(`/checkout/shipping-info?cart_uuid=${cartUuid}`)
+  } else if (!paymentIntent || !paymentUuid) {
+    progress = "75%"
+    if (url.pathname === '/checkout') return redirect(`/checkout/payment?cart_uuid=${cartUuid}`)
   } else {
-    progress = "100%"
+    progress = '100%'
+
+    if (url.pathname === '/checkout') {
+      const redirectStatus = url.searchParams.get('redirect_status')
+
+      if (redirectStatus === 'succeeded') {
+        return redirect(`/checkout/thank-you?cart_uuid=${cartUuid}&payment_uuid=${paymentUuid}&payment_intent=${paymentIntent}`)
+      } else {
+        return redirect(`/checkout/payment-failed?cart_uuid=${cartUuid}&payment_uuid=${paymentUuid}&payment_intent=${paymentIntent}`)
+      }
+    }
   }
 
-  return json({ activeCart, progress })
+  return json({ cart, progress })
 }
 
 export default () => {
-  const { activeCart, progress } = useLoaderData<typeof loader>()
+  const { cart, progress } = useLoaderData<typeof loader>()
+
+  const handleGoBack = () => {
+    if (progress === "100%") return window.location.href = "/"
+
+    goBack();
+  }
 
   return (
     <div className="bg-gray">
       <div className="pt-4 pb-6 px-6 sm:pt-12 sm:px-10">
         <div className="max-w-6xl mx-auto">
-          <button onClick={goBack} className="text-base text-black opacity-50 hover:opacity-100 transition">
+          <button onClick={handleGoBack} className="text-base text-black opacity-50 hover:opacity-100 transition">
             Go Back
           </button>
         </div>
@@ -65,7 +88,7 @@ export default () => {
           </div>
 
           <div className="lg:flex-0.5">
-            <PurchaseCartSummary cart={activeCart} />
+            <PurchaseCartSummary cart={cart} />
           </div>
         </div>
       </div>

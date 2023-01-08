@@ -33,3 +33,4 @@ export { default as PurchaseCartSummaryItem } from './purchase-cart-summary-item
 export { default as PurchaseCartSummaryFee } from './purchase-cart-summary-fee'
 export { default as LocationInfo } from './location-info'
 export { default as ProgressBar } from './progress-bar'
+export { default as PaymentForm } from './payment-form'

@@ -50,8 +50,10 @@ export const action = async ({ request }: ActionArgs) => {
 
   try {
     const location = await createLocation(accessToken, data)
+    const url = new URL(request.url)
+    const cartUuid = url.searchParams.get('cart_uuid')
 
-    return redirect(`/checkout/shipping-info/confirmation?uuid=${location.uuid}`)
+    return redirect(`/checkout/shipping-info/confirmation?uuid=${location.uuid}&cart_uuid=${cartUuid}`)
   } catch (error) {
     if (!(error instanceof RequestError )) throw error
     errors.general = error.message
